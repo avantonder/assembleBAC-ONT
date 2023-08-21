@@ -35,7 +35,12 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK } from '../subworkflows/local/input_check'
+include { INPUT_CHECK   } from '../subworkflows/local/input_check'
+include { SUB_SAMPLING  } from '../subworkflows/local/sub_sampling'
+
+include { CHECKM2       } from '../modules/local/checkm2/main'
+include { CHECKM2_PARSE } from '../modules/local/checkm2_parse'
+include { MLST_PARSE    } from '../modules/local/mlst_parse'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,9 +52,15 @@ include { INPUT_CHECK } from '../subworkflows/local/input_check'
 // MODULE: Installed directly from nf-core/modules
 //
 include { FASTQC                      } from '../modules/nf-core/fastqc/main'
+include { FASTQSCAN as FASTQSCAN_RAW  } from '../modules/nf-core/modules/fastqscan/main'
+include { FASTQSCAN as FASTQSCAN_TRIM } from '../modules/nf-core/modules/fastqscan/main'
 include { FILTLONG                    } from '../modules/nf-core/filtlong/main'
-include { RASUSA                      } from '../modules/nf-core/rasusa/main'
 include { PORECHOP_PORECHOP           } from '../modules/nf-core/porechop/porechop/main'
+include { FLYE                        } from '../modules/nf-core/flye/main'
+include { MEDAKA                      } from '../modules/nf-core/medaka/main'
+include { MLST                        } from '../modules/nf-core/mlst/main'
+include { QUAST                       } from '../modules/nf-core/quast/main'
+include { BAKTA_BAKTA                 } from '../modules/nf-core/bakta/bakta/main'
 include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
 include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
 

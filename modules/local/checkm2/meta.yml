@@ -1,0 +1,45 @@
+name: CheckM2
+description: Rapid assessment of genome bin quality using machine learning.
+keywords:
+  - CheckM2
+tools:
+  - checkm2:
+      description: Rapid assessment of genome bin quality using machine learning.
+      homepage: https://github.com/chklovski/CheckM2
+      documentation: https://github.com/chklovski/CheckM2
+      tool_dev_url: https://github.com/chklovski/CheckM2
+      doi: ""
+      licence: ["GPL v3"]
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - fasta:
+      type: file
+      description: Assembly fasta file
+      pattern: "*.{fasta,fa,fna}"
+  - db:
+      type: file
+      description: |
+        Path to the CheckM2 database
+
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test', single_end:false ]
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+  - tsv:
+      type: file
+      description: CheckM2 output in tsv format
+      pattern: "*.{tsv}"
+
+authors:
+  - "@avantonder"
