@@ -5,6 +5,19 @@
     "description": "This pipeline assembles ONT sequence data",
     "type": "object",
     "definitions": {
+        "flye": {
+            "title": "flye",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "flye_mode": {
+                    "type": "string",
+                    "default": "--nano-hq",
+                    "description": "Data type"
+                }
+            }
+        },
         "sub_sampling_options": {
             "title": "sub_sampling_options",
             "type": "object",
@@ -306,6 +319,9 @@
         }
     },
     "allOf": [
+        {
+            "$ref": "#/definitions/flye"
+        },
         {
             "$ref": "#/definitions/sub_sampling_options"
         },
