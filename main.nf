@@ -1,11 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/assemblebacont
+    avantonder/assembleBAC-ONT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/assemblebacont
-    Website: https://nf-co.re/assemblebacont
-    Slack  : https://nfcore.slack.com/channels/assemblebacont
+    Github : https://github.com/avantonder/assembleBAC-ONT
 ----------------------------------------------------------------------------------------
 */
 
@@ -54,7 +52,7 @@ include { ASSEMBLEBACONT } from './workflows/assemblebacont'
 //
 // WORKFLOW: Run main nf-core/assemblebacont analysis pipeline
 //
-workflow NFCORE_ASSEMBLEBACONT {
+workflow ASSEMBLEBACONT {
     ASSEMBLEBACONT ()
 }
 
@@ -69,7 +67,7 @@ workflow NFCORE_ASSEMBLEBACONT {
 // See: https://github.com/nf-core/rnaseq/issues/619
 //
 workflow {
-    NFCORE_ASSEMBLEBACONT ()
+    ASSEMBLEBACONT ()
 }
 
 /*

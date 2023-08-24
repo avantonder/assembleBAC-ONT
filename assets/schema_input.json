@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/assemblebacont/master/assets/schema_input.json",
-    "title": "nf-core/assemblebacont pipeline - params.input schema",
+    "$id": "https://raw.githubusercontent.com/avantonder/assembleBAC-ONT/master/assets/schema_input.json",
+    "title": "avantonder/assembleBAC-ONT pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
     "items": {

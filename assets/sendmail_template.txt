@@ -9,12 +9,12 @@ Content-Type: text/html; charset=utf-8
 $email_html
 
 --nfcoremimeboundary
-Content-Type: image/png;name="nf-core-assemblebacont_logo.png"
+Content-Type: image/png;name="avantonder-assembleBAC-ONT_logo.png"
 Content-Transfer-Encoding: base64
 Content-ID: <nfcorepipelinelogo>
-Content-Disposition: inline; filename="nf-core-assemblebacont_logo_light.png"
+Content-Disposition: inline; filename="avantonder-assembleBAC-ONT_logo_light.png"
 
-<% out << new File("$projectDir/assets/nf-core-assemblebacont_logo_light.png").
+<% out << new File("$projectDir/assets/avantonder-assembleBAC-ONT_logo_light.png").
     bytes.
     encodeBase64().
     toString().

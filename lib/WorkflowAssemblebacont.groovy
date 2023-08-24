@@ -1,5 +1,5 @@
 //
-// This file holds several functions specific to the workflow/assemblebacont.nf in the nf-core/assemblebacont pipeline
+// This file holds several functions specific to the workflow/assemblebacont.nf in the avantonder/assemblebacont pipeline
 //
 
 import nextflow.Nextflow
@@ -15,9 +15,9 @@ class WorkflowAssemblebacont {
         genomeExistsError(params, log)
 
 
-        if (!params.fasta) {
-            Nextflow.error "Genome fasta file not specified with e.g. '--fasta genome.fa' or via a detectable config file."
-        }
+        //if (!params.fasta) {
+        //    Nextflow.error "Genome fasta file not specified with e.g. '--fasta genome.fa' or via a detectable config file."
+        //}
     }
 
     //
