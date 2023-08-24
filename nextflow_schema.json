@@ -5,6 +5,28 @@
     "description": "This pipeline assembles ONT sequence data",
     "type": "object",
     "definitions": {
+        "sub_sampling_options": {
+            "title": "sub_sampling_options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "subsampling_off": {
+                    "type": "boolean",
+                    "description": "Skip sub-sampling with Rasusa."
+                },
+                "subsampling_depth_cutoff": {
+                    "type": "integer",
+                    "default": 100,
+                    "description": "Desired coverage depth when sub-sampling."
+                },
+                "genome_size": {
+                    "type": "string",
+                    "default": "4.3mb",
+                    "description": "Genome size for sub-sampling"
+                }
+            }
+        },
         "input_output_options": {
             "title": "Input/output options",
             "type": "object",
@@ -285,6 +307,9 @@
     },
     "allOf": [
         {
+            "$ref": "#/definitions/sub_sampling_options"
+        },
+        {
             "$ref": "#/definitions/input_output_options"
         },
         {
@@ -305,11 +330,5 @@
         {
             "$ref": "#/definitions/generic_options"
         }
-    ],
-    "properties": {
-        "genome_size": {
-            "type": "string",
-            "default": "4.3mb"
-        }
-    }
+    ]
 }
