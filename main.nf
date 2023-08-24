@@ -50,21 +50,7 @@ WorkflowMain.initialise(workflow, params, log)
 include { ASSEMBLEBACONT } from './workflows/assemblebacont'
 
 //
-// WORKFLOW: Run main nf-core/assemblebacont analysis pipeline
-//
-workflow ASSEMBLEBACONT {
-    ASSEMBLEBACONT ()
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN ALL WORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-//
-// WORKFLOW: Execute a single named workflow for the pipeline
-// See: https://github.com/nf-core/rnaseq/issues/619
+// WORKFLOW: Run main avantonder/assembleBAC-ONT analysis pipeline
 //
 workflow {
     ASSEMBLEBACONT ()
