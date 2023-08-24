@@ -177,7 +177,7 @@ workflow ASSEMBLEBACONT {
             [],
             []           
         )
-        ch_versions = ch_versions.mix(BAKTA.out.versions.first())
+        ch_versions = ch_versions.mix(BAKTA_BAKTA.out.versions.first())
 
     //
     // MODULE: Run checkm2
