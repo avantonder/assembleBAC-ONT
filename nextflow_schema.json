@@ -10,7 +10,7 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir", "fastq_dir"],
+            "required": ["input", "fastq_dir", "outdir"],
             "properties": {
                 "input": {
                     "type": "string",
@@ -46,16 +46,16 @@
                 }
             }
         },
-        "flye": {
-            "title": "flye",
+        "filtlong": {
+            "title": "filtlong",
             "type": "object",
             "description": "",
             "default": "",
             "properties": {
-                "flye_mode": {
-                    "type": "string",
-                    "default": "--nano-hq",
-                    "description": "Data type"
+                "min_length": {
+                    "type": "integer",
+                    "default": 6000,
+                    "description": "Minimum read length"
                 }
             }
         },
@@ -90,6 +90,19 @@
                 "medaka_model": {
                     "type": "string",
                     "default": "None"
+                }
+            }
+        },
+        "flye": {
+            "title": "flye",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "flye_mode": {
+                    "type": "string",
+                    "default": "--nano-hq",
+                    "description": "Data type"
                 }
             }
         },
@@ -327,13 +340,16 @@
             "$ref": "#/definitions/input_output_options"
         },
         {
-            "$ref": "#/definitions/flye"
+            "$ref": "#/definitions/filtlong"
         },
         {
             "$ref": "#/definitions/sub_sampling_options"
         },
         {
             "$ref": "#/definitions/medaka"
+        },
+        {
+            "$ref": "#/definitions/flye"
         },
         {
             "$ref": "#/definitions/bakta"
