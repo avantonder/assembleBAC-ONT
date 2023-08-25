@@ -9,7 +9,8 @@ workflow INPUT_CHECK {
     samplesheet // file: /path/to/samplesheet.csv
 
     main:
-    SAMPLESHEET_CHECK
+    SAMPLESHEET_CHECK ( samplesheet )
+        .out
         .csv
         .splitCsv ( header:true, sep:',' )
         .map { row -> [ row.barcode, row.sample ] }
