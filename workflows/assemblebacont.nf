@@ -111,6 +111,7 @@ workflow ASSEMBLEBACONT {
     )
     .sample_info
     .join(ch_fastq_dirs, remainder: true)
+    .map { barcode, sample, dir, count -> [ [ id: sample, barcode:barcode ], dir ] }
     .set { ch_fastq_dirs }
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
     
