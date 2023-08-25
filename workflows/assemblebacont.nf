@@ -61,6 +61,7 @@ include { MLST_PARSE    } from '../modules/local/mlst_parse'
 //
 // MODULE: Installed directly from nf-core/modules
 //
+include { ARTIC_GUPPYPLEX             } from '../modules/nf-core/artic/guppyplex/main'
 include { FILTLONG                    } from '../modules/nf-core/filtlong/main'
 include { PORECHOP_PORECHOP           } from '../modules/nf-core/porechop/porechop/main'
 include { FLYE                        } from '../modules/nf-core/flye/main'
@@ -84,22 +85,48 @@ workflow ASSEMBLEBACONT {
 
     ch_versions = Channel.empty()
 
+    // Prepare input from barcode directory specified with --fastq_dir flag
+
+    barcode_dirs = file("${params.fastq_dir}/barcode*", type: 'dir' , maxdepth: 1)
+
+    Channel
+            .fromPath( barcode_dirs )
+            .filter( ~/.*barcode[0-9]{1,4}$/ )
+            .map { dir ->
+                def count = 0
+                for (x in dir.listFiles()) {
+                    if (x.isFile() && x.toString().contains('.fastq')) {
+                        count += x.countFastq()
+                    }
+                }
+                return [ dir.baseName , dir, count ]
+            }
+            .set { ch_fastq_dirs }
+    
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
     INPUT_CHECK (
         file(params.input)
     )
+    .sample_info
+    .join(ch_fastq_dirs, remainder: true)
+    .set { ch_fastq_dirs }
     ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
-    // TODO: OPTIONAL, you can use nf-validation plugin to create an input channel from the samplesheet with Channel.fromSamplesheet("input")
-    // See the documentation https://nextflow-io.github.io/nf-validation/samplesheets/fromSamplesheet/
-    // ! There is currently no tooling to help you write a sample sheet schema
-
+    
+    //
+    // MODULE: Run Artic Guppyplex
+    //
+    ARTIC_GUPPYPLEX (
+        ch_fastq_dirs
+    )
+    ch_versions = ch_versions.mix(ARTIC_GUPPYPLEX.out.versions.first())
+    
     //
     // MODULE: Run filtlong
     //
     FILTLONG (
-        INPUT_CHECK.out.reads
+        ARTIC_GUPPYPLEX.out.fastq
     )
     ch_filtered_reads = FILTLONG.out.reads
     ch_versions       = ch_versions.mix(FILTLONG.out.versions.first())
