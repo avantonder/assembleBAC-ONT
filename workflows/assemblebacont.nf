@@ -19,8 +19,8 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-if (params.baktadb) { ch_baktadb = file(params.baktadb) } else { exit 1, 'bakta database not specified!' }
-if (params.checkm2db) { ch_checkm2db = file(params.checkm2db) } else { exit 1, 'checkm2 database not specified!' }
+//if (params.baktadb) { ch_baktadb = file(params.baktadb) } else { exit 1, 'bakta database not specified!' }
+//if (params.checkm2db) { ch_checkm2db = file(params.checkm2db) } else { exit 1, 'checkm2 database not specified!' }
 //if (params.flye_mode) { ch_flye_mode = file(params.flye_mode) } else { exit 1, 'flye mode not specified!' }
 
 WorkflowAssemblebacont.initialise(params, log)
@@ -182,37 +182,45 @@ workflow ASSEMBLEBACONT {
     //
     // MODULE: Run mlst
     //
-    MLST (
-            ch_assemblies_mlst        
-        )
-        ch_mlst_mlstparse = MLST.out.tsv
-        ch_versions = ch_versions.mix(MLST.out.versions.first())
+    if (!params.skip_mlst) {
+        MLST (
+                ch_assemblies_mlst        
+            )
+            ch_mlst_mlstparse = MLST.out.tsv
+            ch_versions = ch_versions.mix(MLST.out.versions.first())
 
-    //
-    // MODULE: Summarise mlst outputs
-    //
-    MLST_PARSE (
-              ch_mlst_mlstparse.collect{it[1]}.ifEmpty([])
-        )
-        ch_versions = ch_versions.mix(MLST_PARSE.out.versions.first())
-    
+        //
+        // MODULE: Summarise mlst outputs
+        //
+        MLST_PARSE (
+                ch_mlst_mlstparse.collect{it[1]}.ifEmpty([])
+            )
+            ch_versions = ch_versions.mix(MLST_PARSE.out.versions.first())
+    }
+
     //
     // MODULE: Run bakta
     //
-    BAKTA_BAKTA (
-            ch_assemblies_bakta,
-            ch_baktadb,
-            [],
-            []           
-        )
-        ch_versions = ch_versions.mix(BAKTA_BAKTA.out.versions.first())
+    ch_baktadb = Channel.empty()
+
+    if (!params.skip_annotation) {}
+        ch_baktadb = file(params.baktadb)
+        
+        BAKTA_BAKTA (
+                ch_assemblies_bakta,
+                ch_baktadb,
+                [],
+                []           
+            )
+            ch_versions = ch_versions.mix(BAKTA_BAKTA.out.versions.first())
+    }
 
     //
     // MODULE: Run checkm2
     //
     CHECKM2 (
             ch_assemblies_checkm2,
-            ch_checkm2db          
+            params.checkm2db          
         )
         ch_checkm2_checkm2parse = CHECKM2.out.tsv
         ch_versions = ch_versions.mix(CHECKM2.out.versions.first())

@@ -49,7 +49,7 @@
         "filtlong": {
             "title": "filtlong",
             "type": "object",
-            "description": "",
+            "description": "Parameters used when running filtlong",
             "default": "",
             "properties": {
                 "min_length": {
@@ -84,7 +84,7 @@
         "medaka": {
             "title": "medaka",
             "type": "object",
-            "description": "",
+            "description": "Parameters used when running Medaka",
             "default": "",
             "properties": {
                 "medaka_model": {
@@ -96,7 +96,7 @@
         "flye": {
             "title": "flye",
             "type": "object",
-            "description": "",
+            "description": "Parameters used when running flye",
             "default": "",
             "properties": {
                 "flye_mode": {
@@ -106,19 +106,53 @@
                 }
             }
         },
+        "mlst": {
+            "title": "mlst",
+            "type": "object",
+            "description": "Parameters used when running mlst",
+            "default": "",
+            "properties": {
+                "skip_mlst": {
+                    "type": "boolean",
+                    "description": "Skip MLST with mlst"
+                }
+            }
+        },
+        "checkm2": {
+            "title": "checkm2",
+            "type": "object",
+            "description": "Parameters used when running checkm2",
+            "default": "",
+            "properties": {
+                "checkm2db": {
+                    "type": "string",
+                    "description": "Path to CheckM2 DIAMOND database file"
+                }
+            }
+        },
         "bakta": {
             "title": "bakta",
             "type": "object",
-            "description": "",
+            "description": "Parameters used when running Bakta",
             "default": "",
             "properties": {
+                "skip_annotation": {
+                    "type": "boolean",
+                    "description": "Skip annotation with Bakta"
+                },
+                "baktadb": {
+                    "type": "string",
+                    "description": "Path to Bakta database directory"
+                },
                 "proteins": {
                     "type": "string",
-                    "default": "None"
+                    "default": "None",
+                    "description": "Fasta file of trusted protein sequences for CDS annotation"
                 },
                 "prodigal_tf": {
                     "type": "string",
-                    "default": "None"
+                    "default": "None",
+                    "description": "Path to existing Prodigal training file to use for CDS prediction"
                 }
             }
         },
@@ -136,7 +170,8 @@
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "description": "Path to FASTA genome file.",
                     "help_text": "This parameter is *mandatory* if `--genome` is not specified. If you don't have a BWA index available this will be generated for you automatically. Combine with `--save_reference` to save BWA index for future runs.",
-                    "fa_icon": "far fa-file-code"
+                    "fa_icon": "far fa-file-code",
+                    "hidden": true
                 }
             }
         },
@@ -350,6 +385,12 @@
         },
         {
             "$ref": "#/definitions/flye"
+        },
+        {
+            "$ref": "#/definitions/mlst"
+        },
+        {
+            "$ref": "#/definitions/checkm2"
         },
         {
             "$ref": "#/definitions/bakta"
