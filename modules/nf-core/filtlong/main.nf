@@ -9,6 +9,7 @@ process FILTLONG {
 
     input:
     tuple val(meta), path(longreads)
+    val (min_length)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
@@ -21,9 +22,11 @@ process FILTLONG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def min_length = min_length ? "--min_length $min_length" : ''
     if ("$longreads" == "${prefix}.fastq.gz") error "Longread FASTQ input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     filtlong \\
+        $min_length \\
         $args \\
         $longreads \\
         2> ${prefix}.log \\

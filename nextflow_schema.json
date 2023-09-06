@@ -52,10 +52,10 @@
             "description": "Parameters used when running filtlong",
             "default": "",
             "properties": {
-                "min_length": {
+                "min_read_length": {
                     "type": "integer",
                     "default": 6000,
-                    "description": "Minimum read length"
+                    "description": "Minimum read length to keep"
                 }
             }
         },
@@ -89,7 +89,8 @@
             "properties": {
                 "medaka_model": {
                     "type": "string",
-                    "default": "None"
+                    "default": "None",
+                    "description": "Medaka model to use"
                 }
             }
         },

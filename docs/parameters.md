@@ -1,4 +1,4 @@
-# avantonder/assembleBAC-ONT pipeline parameters
+# nf-core/assemblebacont pipeline parameters
 
 This pipeline assembles ONT sequence data
 
@@ -20,7 +20,7 @@ Parameters used when running filtlong
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `min_length` | Minimum read length | `integer` | 6000 |  |  |
+| `min_read_length` | Minimum read length to keep | `integer` | 6000 |  |  |
 
 ## sub_sampling_options
 
@@ -38,7 +38,7 @@ Parameters used when running Medaka
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `medaka_model` |  | `string` | None |  |  |
+| `medaka_model` | Medaka model to use | `string` | None |  |  |
 
 ## flye
 

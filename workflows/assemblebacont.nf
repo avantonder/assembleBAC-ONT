@@ -127,7 +127,8 @@ workflow ASSEMBLEBACONT {
     // MODULE: Run filtlong
     //
     FILTLONG (
-        ARTIC_GUPPYPLEX.out.fastq
+        ARTIC_GUPPYPLEX.out.fastq,
+        params.min_read_length
     )
     ch_filtered_reads = FILTLONG.out.reads
     ch_versions       = ch_versions.mix(FILTLONG.out.versions.first())
@@ -171,7 +172,8 @@ workflow ASSEMBLEBACONT {
     // MODULE: Run Medaka
     //
     MEDAKA (
-            ch_reads_assembly
+            ch_reads_assembly,
+            params.medaka_model
         )
     ch_assemblies_bakta   = MEDAKA.out.assembly
     ch_assemblies_mlst    = MEDAKA.out.assembly
