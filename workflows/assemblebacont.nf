@@ -203,7 +203,7 @@ workflow ASSEMBLEBACONT {
     //
     ch_baktadb = Channel.empty()
 
-    if (!params.skip_annotation) {}
+    if (!params.skip_annotation) {
         ch_baktadb = file(params.baktadb)
         
         BAKTA_BAKTA (
