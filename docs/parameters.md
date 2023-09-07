@@ -1,4 +1,4 @@
-# nf-core/assemblebacont pipeline parameters
+# avantonder/assembleBAC-ONT pipeline parameters
 
 This pipeline assembles ONT sequence data
 

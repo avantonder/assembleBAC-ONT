@@ -1,6 +1,6 @@
 # assembleBAC-ONT
 
-# ![avantonder/assembleBAC-ONT](docs/images/nf-core-assemblebacont_logo_light.png#gh-light-mode-only) ![avantonder/assembleBAC-ONT](docs/images/nf-core-assemblebacont_logo_dark.png#gh-dark-mode-only)
+# ![avantonder/assembleBAC-ONT](docs/images/assembleBAC-ONT_metromap.png)
 
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
@@ -58,7 +58,7 @@
    > - If you are using `singularity`, please use the [`nf-core download`](https://nf-co.re/tools/#downloading-pipelines-for-offline-use) command to download images first, before running the pipeline. Setting the [`NXF_SINGULARITY_CACHEDIR` or `singularity.cacheDir`](https://www.nextflow.io/docs/latest/singularity.html?#singularity-docker-hub) Nextflow options enables you to store and re-use the images from a central location for future pipeline runs.
    > - If you are using `conda`, it is highly recommended to use the [`NXF_CONDA_CACHEDIR` or `conda.cacheDir`](https://www.nextflow.io/docs/latest/conda.html) settings to store the environments in a central location for future pipeline runs.
 
-6. Start running your own analysis!
+4. Start running your own analysis!
     - Typical command for assembly and annotation
 
     ```bash
@@ -68,6 +68,8 @@
         --input samplesheet.csv \
         --fastq_dir path/to/fastq/files \
         --genome_size <ESTIMATED GENOME SIZE e.g. 4M> \
+        --medaka_model <MEDAKA MODEL> \
+        --min_read_length <MINIMUM READ LENGTH> \
         --outdir <OUTDIR> \
         --baktadb path/to/baktadb/dir \
         --checkm2db path/to/checkm2db/diruniref100.KO.1.dmnd \
@@ -82,7 +84,7 @@ The avantonder/assembleBAC-ONT pipeline comes with documentation about the pipel
 
 ## Credits
 
-avantonder/assembleBAC-ONT was originally written by Andries van Tonder.  I wouldn't have been able to write this pipeline with out the tools, documentation, pipelines and modules made available by the fantastic [nf-core community](https://nf-co.re/).
+avantonder/assembleBAC-ONT was originally written by Andries van Tonder.  I wouldn't have been able to write this pipeline with out the tools, documentation, pipelines and modules made available by the fantastic [nf-core community](https://nf-co.re/). In particular, the excellent viralrecon pipeline was a source of code and inspiration. Finally, a shout out to Robert Petit's [Dragonflye](https://github.com/rpetit3/dragonflye) as an additional source of inspiration.
 
 ## Feedback
 
