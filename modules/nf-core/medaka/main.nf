@@ -9,6 +9,7 @@ process MEDAKA {
 
     input:
     tuple val(meta), path(reads), path(assembly)
+    val model
 
     output:
     tuple val(meta), path("*.fa.gz"), emit: assembly
@@ -20,8 +21,10 @@ process MEDAKA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def model = model ? "-m $model" : ""
     """
     medaka_consensus \\
+        $model \\
         -t $task.cpus \\
         $args \\
         -i $reads \\

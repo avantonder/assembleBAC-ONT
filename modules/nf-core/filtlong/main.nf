@@ -8,12 +8,13 @@ process FILTLONG {
         'biocontainers/filtlong:0.2.1--h9a82719_0' }"
 
     input:
-    tuple val(meta), path(shortreads), path(longreads)
+    tuple val(meta), path(longreads)
+    val (min_length)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                 , emit: versions
+    path "versions.yml"                , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,11 +22,11 @@ process FILTLONG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def short_reads = !shortreads ? "" : meta.single_end ? "-1 $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}"
+    def min_length = min_length ? "--min_length $min_length" : ''
     if ("$longreads" == "${prefix}.fastq.gz") error "Longread FASTQ input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     filtlong \\
-        $short_reads \\
+        $min_length \\
         $args \\
         $longreads \\
         2> ${prefix}.log \\

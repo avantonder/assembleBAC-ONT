@@ -1,4 +1,4 @@
-# nf-core/assemblebacont: Citations
+# avantonder/assembleBAC-ONT: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 
@@ -10,13 +10,35 @@
 
 ## Pipeline tools
 
-- [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+- [ARTIC network](https://github.com/artic-network)
 
-  > Andrews, S. (2010). FastQC: A Quality Control Tool for High Throughput Sequence Data [Online]. Available online https://www.bioinformatics.babraham.ac.uk/projects/fastqc/.
+- [Bakta](https://pubmed.ncbi.nlm.nih.gov/34739369/)
+  > Schwengers O, Jelonek L, Dieckmann MA, Beyvers S, Blom J, Goesmann A. Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microb Genom. 2021 Nov;7(11):000685. doi: 10.1099/mgen.0.000685. PMID: 34739369; PMCID: PMC8743544.
+
+- [CheckM2](https://github.com/chklovski/CheckM2)
+
+- [Filtlong](https://github.com/rrwick/Filtlong)
+
+- [Flye](https://pubmed.ncbi.nlm.nih.gov/30936562/)
+  > Kolmogorov M, Yuan J, Lin Y, Pevzner PA. Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol. 2019 May;37(5):540-546. doi: 10.1038/s41587-019-0072-8. Epub 2019 Apr 1. PMID: 30936562.
+
+- [Medaka](https://github.com/nanoporetech/medaka)
+
+- [Mash](https://pubmed.ncbi.nlm.nih.gov/27323842/)
+    > Ondov BD, Treangen TJ, Melsted P, Mallonee AB, Bergman NH, Koren S, Phillippy AM. Mash: fast genome and metagenome distance estimation using MinHash. Genome Biol. 2016 Jun 20;17(1):132. doi: 10.1186/s13059-016-0997-x. PMID: 27323842; PMCID: PMC4915045.
+
+- [mlst](https://github.com/tseemann/mlst)
 
 - [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
 
   > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
+
+- [QUAST](https://www.ncbi.nlm.nih.gov/pubmed/23422339/)
+
+  > Gurevich A, Saveliev V, Vyahhi N, Tesler G. QUAST: quality assessment tool for genome assemblies. Bioinformatics. 2013 Apr 15;29(8):1072-5. doi: 10.1093/bioinformatics/btt086. Epub 2013 Feb 19. PubMed PMID: 23422339; PubMed Central PMCID: PMC3624806.
+
+- [Rasusa](https://github.com/mbhall88/rasusa)
+  > Hall MB. Rasusa: Randomly subsample sequencing reads to a specified coverage. 2019. doi:10.5281/zenodo.3731394
 
 ## Software packaging/containerisation tools
 

@@ -1,5 +1,5 @@
 //
-// This file holds several functions specific to the main.nf workflow in the nf-core/assemblebacont pipeline
+// This file holds several functions specific to the main.nf workflow in the avantonder/assemblebacont pipeline
 //
 
 import nextflow.Nextflow

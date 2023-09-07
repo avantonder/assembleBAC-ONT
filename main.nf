@@ -1,11 +1,9 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/assemblebacont
+    avantonder/assembleBAC-ONT
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/assemblebacont
-    Website: https://nf-co.re/assemblebacont
-    Slack  : https://nfcore.slack.com/channels/assemblebacont
+    Github : https://github.com/avantonder/assembleBAC-ONT
 ----------------------------------------------------------------------------------------
 */
 
@@ -52,24 +50,10 @@ WorkflowMain.initialise(workflow, params, log)
 include { ASSEMBLEBACONT } from './workflows/assemblebacont'
 
 //
-// WORKFLOW: Run main nf-core/assemblebacont analysis pipeline
-//
-workflow NFCORE_ASSEMBLEBACONT {
-    ASSEMBLEBACONT ()
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN ALL WORKFLOWS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-//
-// WORKFLOW: Execute a single named workflow for the pipeline
-// See: https://github.com/nf-core/rnaseq/issues/619
+// WORKFLOW: Run main avantonder/assembleBAC-ONT analysis pipeline
 //
 workflow {
-    NFCORE_ASSEMBLEBACONT ()
+    ASSEMBLEBACONT ()
 }
 
 /*
