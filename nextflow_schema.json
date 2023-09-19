@@ -125,7 +125,7 @@
             "default": "",
             "properties": {
                 "skip_assemblyqc": {
-                    "type": "string",
+                    "type": "boolean",
                     "description": "Skip assembly QC with CheckM2 and Quast"
                 },
                 "checkm2db": {
