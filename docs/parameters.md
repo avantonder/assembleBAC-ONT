@@ -1,4 +1,4 @@
-# avantonder/assembleBAC-ONT pipeline parameters
+# nf-core/assemblebacont pipeline parameters
 
 This pipeline assembles ONT sequence data
 
@@ -22,7 +22,7 @@ Parameters used when running filtlong
 |-----------|-----------|-----------|-----------|-----------|-----------|
 | `min_read_length` | Minimum read length to keep | `integer` | 6000 |  |  |
 
-## sub_sampling_options
+## Sub-sampling options
 
 
 
@@ -56,17 +56,18 @@ Parameters used when running mlst
 |-----------|-----------|-----------|-----------|-----------|-----------|
 | `skip_mlst` | Skip MLST with mlst | `boolean` |  |  |  |
 
-## checkm2
+## Assembly QC options
 
-Parameters used when running checkm2
+
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
+| `skip_assemblyqc` | Skip assembly QC with CheckM2 and Quast | `string` |  |  |  |
 | `checkm2db` | Path to CheckM2 DIAMOND database file | `string` |  |  |  |
 
-## bakta
+## Annotation options
 
-Parameters used when running Bakta
+
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
