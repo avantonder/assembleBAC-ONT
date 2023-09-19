@@ -238,24 +238,23 @@ workflow ASSEMBLEBACONT {
                 ch_checkm2_checkm2parse.collect{it[1]}.ifEmpty([])
             )
             ch_versions = ch_versions.mix(CHECKM2_PARSE.out.versions.first())
-        
-        //
-        // MODULE: Run quast
-        //
-        ch_assemblies_quast
-            .map { meta, fasta -> fasta }
-            .collect()
-            .set { ch_to_quast }
-        
-        QUAST (
-                ch_to_quast,
-                [],
-                [],
-                false,
-                false
-            )
-            ch_versions = ch_versions.mix(QUAST.out.versions.first())
     }
+    //
+    // MODULE: Run quast
+    //
+    ch_assemblies_quast
+        .map { meta, fasta -> fasta }
+        .collect()
+        .set { ch_to_quast }
+    
+    QUAST (
+            ch_to_quast,
+            [],
+            [],
+            false,
+            false
+        )
+        ch_versions = ch_versions.mix(QUAST.out.versions.first())
 
     //
     // MODULE: Collate software versions
