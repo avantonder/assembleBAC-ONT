@@ -19,9 +19,6 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-//if (params.baktadb) { ch_baktadb = file(params.baktadb) } else { exit 1, 'bakta database not specified!' }
-//if (params.checkm2db) { ch_checkm2db = file(params.checkm2db) } else { exit 1, 'checkm2 database not specified!' }
-//if (params.flye_mode) { ch_flye_mode = file(params.flye_mode) } else { exit 1, 'flye mode not specified!' }
 
 WorkflowAssemblebacont.initialise(params, log)
 
@@ -217,24 +214,28 @@ workflow ASSEMBLEBACONT {
             ch_versions = ch_versions.mix(BAKTA_BAKTA.out.versions.first())
     }
 
-    //
-    // MODULE: Run checkm2
-    //
-    CHECKM2 (
-            ch_assemblies_checkm2,
-            params.checkm2db          
-        )
-        ch_checkm2_checkm2parse = CHECKM2.out.tsv
-        ch_versions = ch_versions.mix(CHECKM2.out.versions.first())
-
-    //
-    // MODULE: Summarise checkm2 outputs
-    //
-    CHECKM2_PARSE (
-              ch_checkm2_checkm2parse.collect{it[1]}.ifEmpty([])
-        )
-        ch_versions = ch_versions.mix(CHECKM2_PARSE.out.versions.first())
+    ch_checkm2db = Channel.empty()
     
+    if (!params.skip_assemblyqc) {
+        ch_checkm2db = file(params.checkm2db)
+        //
+        // MODULE: Run checkm2
+        //
+        CHECKM2 (
+                ch_assemblies_checkm2,
+                ch_checkm2db          
+            )
+            ch_checkm2_checkm2parse = CHECKM2.out.tsv
+            ch_versions = ch_versions.mix(CHECKM2.out.versions.first())
+
+        //
+        // MODULE: Summarise checkm2 outputs
+        //
+        CHECKM2_PARSE (
+                ch_checkm2_checkm2parse.collect{it[1]}.ifEmpty([])
+            )
+            ch_versions = ch_versions.mix(CHECKM2_PARSE.out.versions.first())
+    }
     //
     // MODULE: Run quast
     //
@@ -251,7 +252,7 @@ workflow ASSEMBLEBACONT {
             false
         )
         ch_versions = ch_versions.mix(QUAST.out.versions.first())
-    
+
     //
     // MODULE: Collate software versions
     //

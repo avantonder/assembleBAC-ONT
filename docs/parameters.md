@@ -8,7 +8,7 @@ Define where the pipeline should find input data and save output data.
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `input` | Path to comma-separated file containing information about the samples in the experiment. <details><summary>Help</summary><small>You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/assemblebacont/usage#samplesheet-input).</small></details>| `string` |  | True |  |
+| `input` | Path to comma-separated file containing information about the samples in the experiment. <details><summary>Help</summary><small>You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](docs/usage).</small></details>| `string` |  | True |  |
 | `fastq_dir` | Path to a folder containing fastq files from the Nanopore run. | `string` |  | True |  |
 | `outdir` | The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure. | `string` |  | True |  |
 | `email` | Email address for completion summary. <details><summary>Help</summary><small>Set this parameter to your e-mail address to get a summary e-mail with details of the run sent to you when the workflow exits. If set in your user config file (`~/.nextflow/config`) then you don't need to specify this on the command line for every run.</small></details>| `string` |  |  |  |
@@ -22,7 +22,7 @@ Parameters used when running filtlong
 |-----------|-----------|-----------|-----------|-----------|-----------|
 | `min_read_length` | Minimum read length to keep | `integer` | 6000 |  |  |
 
-## sub_sampling_options
+## Sub-sampling options
 
 
 
@@ -56,17 +56,18 @@ Parameters used when running mlst
 |-----------|-----------|-----------|-----------|-----------|-----------|
 | `skip_mlst` | Skip MLST with mlst | `boolean` |  |  |  |
 
-## checkm2
+## Assembly QC options
 
-Parameters used when running checkm2
+
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
+| `skip_assemblyqc` | Skip assembly QC with CheckM2 and Quast | `boolean` |  |  |  |
 | `checkm2db` | Path to CheckM2 DIAMOND database file | `string` |  |  |  |
 
-## bakta
+## Annotation options
 
-Parameters used when running Bakta
+
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|

@@ -60,7 +60,7 @@
             }
         },
         "sub_sampling_options": {
-            "title": "sub_sampling_options",
+            "title": "Sub-sampling options",
             "type": "object",
             "description": "",
             "default": "",
@@ -119,22 +119,24 @@
                 }
             }
         },
-        "checkm2": {
-            "title": "checkm2",
+        "assembly_qc_options": {
+            "title": "Assembly QC options",
             "type": "object",
-            "description": "Parameters used when running checkm2",
             "default": "",
             "properties": {
+                "skip_assemblyqc": {
+                    "type": "boolean",
+                    "description": "Skip assembly QC with CheckM2 and Quast"
+                },
                 "checkm2db": {
                     "type": "string",
                     "description": "Path to CheckM2 DIAMOND database file"
                 }
             }
         },
-        "bakta": {
-            "title": "bakta",
+        "annotation_options": {
+            "title": "Annotation options",
             "type": "object",
-            "description": "Parameters used when running Bakta",
             "default": "",
             "properties": {
                 "skip_annotation": {
@@ -391,10 +393,10 @@
             "$ref": "#/definitions/mlst"
         },
         {
-            "$ref": "#/definitions/checkm2"
+            "$ref": "#/definitions/assembly_qc_options"
         },
         {
-            "$ref": "#/definitions/bakta"
+            "$ref": "#/definitions/annotation_options"
         },
         {
             "$ref": "#/definitions/reference_genome_options"
