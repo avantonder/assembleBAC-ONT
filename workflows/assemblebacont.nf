@@ -19,9 +19,6 @@ for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true
 
 // Check mandatory parameters
 if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-//if (params.baktadb) { ch_baktadb = file(params.baktadb) } else { exit 1, 'bakta database not specified!' }
-//if (params.checkm2db) { ch_checkm2db = file(params.checkm2db) } else { exit 1, 'checkm2 database not specified!' }
-//if (params.flye_mode) { ch_flye_mode = file(params.flye_mode) } else { exit 1, 'flye mode not specified!' }
 
 WorkflowAssemblebacont.initialise(params, log)
 
