@@ -28,7 +28,7 @@ Parameters used when running filtlong
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `subsampling_off` | Skip sub-sampling with Rasusa. | `boolean` |  |  |  |
+| `skip_subsampling` | Skip sub-sampling with Rasusa. | `boolean` |  |  |  |
 | `subsampling_depth_cutoff` | Desired coverage depth when sub-sampling. | `integer` | 100 |  |  |
 | `genome_size` | Genome size for sub-sampling | `string` | 4.3mb |  |  |
 
@@ -46,7 +46,7 @@ Parameters used when running flye
 
 | Parameter | Description | Type | Default | Required | Hidden |
 |-----------|-----------|-----------|-----------|-----------|-----------|
-| `flye_mode` | Data type | `string` | --nano-hq |  |  |
+| `flye_mode` | Data type (options are: `--nano-raw`,`--nano-corr`,`--nano-hq` ) | `string` | --nano-hq |  |  |
 
 ## mlst
 

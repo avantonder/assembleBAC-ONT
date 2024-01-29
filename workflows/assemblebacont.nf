@@ -45,6 +45,7 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 include { INPUT_CHECK   } from '../subworkflows/local/input_check'
 include { SUB_SAMPLING  } from '../subworkflows/local/sub_sampling'
 
+include { FLYE_PARSE    } from '../modules/local/flye_parse'
 include { CHECKM2       } from '../modules/local/checkm2/main'
 include { CHECKM2_PARSE } from '../modules/local/checkm2_parse'
 include { MLST_PARSE    } from '../modules/local/mlst_parse'
@@ -133,7 +134,7 @@ workflow ASSEMBLEBACONT {
     //
     // MODULE: Subsample reads
     //
-    if (!params.subsampling_off) {
+    if (!params.skip_subsampling) {
         SUB_SAMPLING(
             ch_filtered_reads
         )
@@ -158,12 +159,21 @@ workflow ASSEMBLEBACONT {
             params.flye_mode
         )
     //ch_assemblies_medaka = FLYE.out.fasta
-    ch_versions          = ch_versions.mix(FLYE.out.versions.first())
+    ch_flye_logs = FLYE.out.log
+    ch_versions  = ch_versions.mix(FLYE.out.versions.first())
 
     // Create channel for Medaka
     ch_trimmed_reads               // tuple val(meta), path(reads)
         .join( FLYE.out.fasta )    // tuple val(meta), path(assembly)
         .set { ch_reads_assembly } // tuple val(meta), path(reads), path(assembly)
+    
+    //
+    // MODULE: Summarise mlst outputs
+    //
+    FLYE_PARSE (
+            ch_flye_logs.collect{it[1]}.ifEmpty([])
+        )
+    ch_versions = ch_versions.mix(FLYE_PARSE.out.versions.first())
     
     //
     // MODULE: Run Medaka

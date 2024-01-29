@@ -65,7 +65,7 @@
             "description": "",
             "default": "",
             "properties": {
-                "subsampling_off": {
+                "skip_subsampling": {
                     "type": "boolean",
                     "description": "Skip sub-sampling with Rasusa."
                 },
