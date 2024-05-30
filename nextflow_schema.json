@@ -88,7 +88,7 @@
             "default": "",
             "properties": {
                 "skip_medaka": {
-                    "type": "string",
+                    "type": "boolean",
                     "description": "Skip assembly correction with Medaka"
                 },
                 "medaka_model": {
@@ -133,7 +133,7 @@
                     "description": "Skip assembly QC with CheckM2"
                 },
                 "skip_quast": {
-                    "type": "string",
+                    "type": "boolean",
                     "description": "Skip assembly QC with QUAST"
                 },
                 "checkm2db": {
