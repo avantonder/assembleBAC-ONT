@@ -159,8 +159,9 @@ workflow ASSEMBLEBACONT {
             params.flye_mode
         )
     //ch_assemblies_medaka = FLYE.out.fasta
-    ch_flye_logs = FLYE.out.log
-    ch_versions  = ch_versions.mix(FLYE.out.versions.first())
+    ch_flye_logs       = FLYE.out.log
+    ch_flye_assemblies = FLYE.out.fasta
+    ch_versions        = ch_versions.mix(FLYE.out.versions.first())
 
     // Create channel for Medaka
     ch_trimmed_reads               // tuple val(meta), path(reads)
@@ -178,15 +179,17 @@ workflow ASSEMBLEBACONT {
     //
     // MODULE: Run Medaka
     //
-    MEDAKA (
-            ch_reads_assembly,
-            params.medaka_model
-        )
-    ch_assemblies_bakta   = MEDAKA.out.assembly
-    ch_assemblies_mlst    = MEDAKA.out.assembly
-    ch_assemblies_checkm2 = MEDAKA.out.assembly
-    ch_assemblies_quast   = MEDAKA.out.assembly
-    ch_versions           = ch_versions.mix(MEDAKA.out.versions.first())
+    if (!params.skip_medaka) {
+        MEDAKA (
+                ch_reads_assembly,
+                params.medaka_model
+            )
+        ch_assemblies_bakta   = MEDAKA.out.assembly
+        ch_assemblies_mlst    = MEDAKA.out.assembly
+        ch_assemblies_checkm2 = MEDAKA.out.assembly
+        ch_assemblies_quast   = MEDAKA.out.assembly
+        ch_versions           = ch_versions.mix(MEDAKA.out.versions.first())
+    }
 
     //
     // MODULE: Run mlst
@@ -249,19 +252,21 @@ workflow ASSEMBLEBACONT {
     //
     // MODULE: Run quast
     //
-    ch_assemblies_quast
-        .map { meta, fasta -> fasta }
-        .collect()
-        .set { ch_to_quast }
-    
-    QUAST (
-            ch_to_quast,
-            [],
-            [],
-            false,
-            false
-        )
-        ch_versions = ch_versions.mix(QUAST.out.versions.first())
+    if (!params.skip_quast) {
+        ch_assemblies_quast
+            .map { meta, fasta -> fasta }
+            .collect()
+            .set { ch_to_quast }
+        
+        QUAST (
+                ch_to_quast,
+                [],
+                [],
+                false,
+                false
+            )
+            ch_versions = ch_versions.mix(QUAST.out.versions.first())
+    }
 
     //
     // MODULE: Collate software versions
@@ -285,7 +290,9 @@ workflow ASSEMBLEBACONT {
     ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
     ch_multiqc_files = ch_multiqc_files.mix(FILTLONG.out.log.collect{it[1]}.ifEmpty([]))
     ch_multiqc_files = ch_multiqc_files.mix(PORECHOP_PORECHOP.out.log.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(QUAST.out.tsv.collect())
+    if (!params.skip_quast) {
+        ch_multiqc_files = ch_multiqc_files.mix(QUAST.out.tsv.collect())
+    }
 
     MULTIQC (
         ch_multiqc_files.collect(),

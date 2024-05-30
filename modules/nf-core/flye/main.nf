@@ -43,6 +43,7 @@ process FLYE {
     mv assembly_info.txt ${prefix}.assembly_info.txt
     mv flye.log ${prefix}.flye.log
     mv params.json ${prefix}.params.json
+    mv assembly.fasta ${prefix}.assembly.fasta
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
