@@ -2,7 +2,7 @@ process CHECKM2 {
     tag "$meta.id"
     label 'process_medium'
 
-    conda (params.enable_conda ? "bioconda::checkm2=1.0.1" : null)
+    conda "bioconda::checkm2=1.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/checkm2:1.0.1--pyh7cba7a3_0' :
         'quay.io/biocontainers/checkm2:1.0.1--pyh7cba7a3_0' }"
