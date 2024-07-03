@@ -10,7 +10,7 @@
 
 ## Introduction
 
-**avantonder/assembleBAC-ONT** is a bioinformatics pipeline that *de novo* assembles and annotates Oxford Nanopore (ONT) long-read sequence data
+**avantonder/assembleBAC-ONT** is a bioinformatics pipeline that *de novo* assembles and annotates Oxford Nanopore (ONT) long-read sequence data.
 
 1. Aggregate pre-demultiplexed reads from MinKNOW/Guppy ([`artic guppyplex`](https://artic.readthedocs.io/en/latest/commands/))
 2. Filter long reads ([`Filtlong`](https://github.com/rrwick/Filtlong))
