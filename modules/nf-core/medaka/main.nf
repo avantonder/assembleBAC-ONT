@@ -2,10 +2,10 @@ process MEDAKA {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::medaka=1.11.3"
+    conda "bioconda::medaka=2.0.1"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/medaka:1.11.3--py39h05d5c5e_0' :
-        'biocontainers/medaka:1.11.3--py39h05d5c5e_0' }"
+        'https://depot.galaxyproject.org/singularity/2.0.1--py38h8774169_0' :
+        'biocontainers/medaka:2.0.1--py38h8774169_0' }"
 
     input:
     tuple val(meta), path(reads), path(assembly)
