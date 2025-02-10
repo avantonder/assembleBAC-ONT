@@ -189,6 +189,11 @@ workflow ASSEMBLEBACONT {
         ch_assemblies_checkm2 = MEDAKA.out.assembly
         ch_assemblies_quast   = MEDAKA.out.assembly
         ch_versions           = ch_versions.mix(MEDAKA.out.versions.first())
+    } else {
+        ch_assemblies_bakta   = ch_flye_assemblies
+        ch_assemblies_mlst    = ch_flye_assemblies
+        ch_assemblies_checkm2 = ch_flye_assemblies
+        ch_assemblies_quast   = ch_flye_assemblies
     }
 
     //
