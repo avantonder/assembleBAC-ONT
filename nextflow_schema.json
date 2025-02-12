@@ -43,6 +43,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Turn on run merging"
+                },
+                "save_runmerged_reads": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Save reads from samples that went through the run-merging step"
                 }
             }
         },
@@ -290,7 +295,7 @@
                 },
                 "trace_report_suffix": {
                     "type": "string",
-                    "default": "2025-02-12_15-20-27"
+                    "default": "2025-02-12_16-29-41"
                 }
             }
         }
