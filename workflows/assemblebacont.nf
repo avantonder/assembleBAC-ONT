@@ -99,7 +99,7 @@ workflow ASSEMBLEBACONT {
                 skip: true
             }
 
-        ch_reads_runmerged = MERGE_RUNS ( ch_reads_for_cat.cat ).fastq
+        ch_reads_runmerged = MERGE_RUNS ( ch_reads_for_cat.cat ).reads
                 .mix( ch_reads_for_cat.skip )
                 .map {
                     meta, fastq ->
