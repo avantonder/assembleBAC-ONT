@@ -80,7 +80,7 @@ workflow ASSEMBLEBACONT {
         .map { meta, fastq -> 
         
         // Define single_end
-        meta.single_end = true
+        meta.single_end = ( fastq )
         
         return [ meta, fastq ]
         }
