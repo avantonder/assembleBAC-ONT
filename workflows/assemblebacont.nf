@@ -50,6 +50,7 @@ include { MLST_PARSE             } from '../modules/local/mlst_parse'
 // MODULE: Installed directly from nf-core/modules
 //
 include { CAT_FASTQ as MERGE_RUNS } from '../modules/nf-core/cat/fastq/main'
+include { FASTQC                  } from '../modules/nf-core/fastqc/main'
 include { FALCO                   } from '../modules/nf-core/falco/main'
 include { FLYE                    } from '../modules/nf-core/flye/main'
 include { MEDAKA                  } from '../modules/nf-core/medaka/main'
