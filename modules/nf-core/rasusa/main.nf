@@ -2,7 +2,7 @@ process RASUSA {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::rasusa=0.3.0"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
         'biocontainers/rasusa:0.3.0--h779adbc_1' }"
@@ -21,7 +21,7 @@ process RASUSA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output = "--output ${prefix}.fastq.gz"
+    def output   = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
         $args \\

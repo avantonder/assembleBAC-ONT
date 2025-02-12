@@ -2,19 +2,18 @@ process FILTLONG {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::filtlong=0.2.1"
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/filtlong:0.2.1--h9a82719_0' :
         'biocontainers/filtlong:0.2.1--h9a82719_0' }"
 
     input:
-    tuple val(meta), path(longreads)
-    val (min_length)
+    tuple val(meta), path(shortreads), path(longreads)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    path "versions.yml"                 , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,14 +21,14 @@ process FILTLONG {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def min_length = min_length ? "--min_length $min_length" : ''
+    def short_reads = !shortreads ? "" : meta.single_end ? "-1 $shortreads" : "-1 ${shortreads[0]} -2 ${shortreads[1]}"
     if ("$longreads" == "${prefix}.fastq.gz") error "Longread FASTQ input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     filtlong \\
-        $min_length \\
+        $short_reads \\
         $args \\
         $longreads \\
-        2> ${prefix}.log \\
+        2> >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
 
     cat <<-END_VERSIONS > versions.yml

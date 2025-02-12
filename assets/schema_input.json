@@ -12,12 +12,14 @@
                 "pattern": "^\\S+$",
                 "errorMessage": "Sample name must be provided and cannot contain spaces"
             },
-            "barcode": {
-                "type": "integer",
-                "pattern": "^\\d+$",
-                "errorMessage": "Barcode must be provided and must be an integer"
+            "fastq": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for read must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             }
         },
-        "required": ["sample", "barcode"]
+        "required": ["sample", "fastq"]
     }
 }

@@ -1,3 +1,4 @@
-sample,barcode
-SAMPLE_1,1
-SAMPLE_2,2
+sample,fastq
+SAMPLE_1,path/to/fastq/file1
+SAMPLE_1,path/to/fastq/file2
+SAMPLE_2,path/to/fastq/file1
