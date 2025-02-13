@@ -89,8 +89,8 @@ workflow ASSEMBLEBACONT {
     if ( params.perform_runmerging ) {
     
         ch_reads_for_cat = ch_input
-            .map { meta, fastq -> [ meta, fastq.flatten() ]
-            }
+            .groupTuple()      
+            .map { meta, fastq -> [ meta, fastq.flatten() ]}
             .branch { meta, fastq -> 
             // we can't concatenate files if there is not a second run, we branch
             // here to separate them out, and mix back in after for efficiency
