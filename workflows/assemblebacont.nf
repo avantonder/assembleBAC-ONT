@@ -182,7 +182,8 @@ workflow ASSEMBLEBACONT {
     if (!params.skip_medaka) {
         MEDAKA (
                 ch_reads_assembly,
-                file("${params.medaka_model_base_path}${params.medaka_model}_model.tar.gz")
+                file(params.medaka_model_base_full_path)
+                //file("${params.medaka_model_base_path}${params.medaka_model}_model.tar.gz")
                 //params.medaka_model
             )
         ch_assemblies_bakta   = MEDAKA.out.assembly
