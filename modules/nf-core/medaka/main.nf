@@ -25,10 +25,9 @@ process MEDAKA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def model = model ? "-m $model" : ""
+    //def model = model ? "-m $model" : ""
     """
     medaka_consensus \\
-        $model \\
         -t $task.cpus \\
         $args \\
         -i $reads \\
