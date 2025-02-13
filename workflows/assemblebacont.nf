@@ -265,8 +265,8 @@ workflow ASSEMBLEBACONT {
             
             QUAST (
                     ch_to_quast,
-                    [],
-                    []
+                    false,
+                    false
                 )
                 ch_versions = ch_versions.mix(QUAST.out.versions.first())
         }
