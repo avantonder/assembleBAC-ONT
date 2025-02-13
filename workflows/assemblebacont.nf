@@ -32,13 +32,14 @@ if ( params.input ) {
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { LONGREAD_PREPROCESSING } from '../subworkflows/local/longread_preprocessing'
-include { SUB_SAMPLING           } from '../subworkflows/local/sub_sampling'
+include { LONGREAD_PREPROCESSING  } from '../subworkflows/local/longread_preprocessing'
+include { SUB_SAMPLING            } from '../subworkflows/local/sub_sampling'
 
-include { FLYE_PARSE             } from '../modules/local/flye_parse'
-include { CHECKM2                } from '../modules/local/checkm2/main'
-include { CHECKM2_PARSE          } from '../modules/local/checkm2_parse'
-include { MLST_PARSE             } from '../modules/local/mlst_parse'
+include { CAT_FASTQ as MERGE_RUNS } from '../modules/local/cat/fastq/main'
+include { FLYE_PARSE              } from '../modules/local/flye_parse'
+include { CHECKM2                 } from '../modules/local/checkm2/main'
+include { CHECKM2_PARSE           } from '../modules/local/checkm2_parse'
+include { MLST_PARSE              } from '../modules/local/mlst_parse'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,15 +50,15 @@ include { MLST_PARSE             } from '../modules/local/mlst_parse'
 //
 // MODULE: Installed directly from nf-core/modules
 //
-include { CAT_FASTQ as MERGE_RUNS } from '../modules/nf-core/cat/fastq/main'
-include { FASTQC                  } from '../modules/nf-core/fastqc/main'
-include { FALCO                   } from '../modules/nf-core/falco/main'
-include { FLYE                    } from '../modules/nf-core/flye/main'
-include { MEDAKA                  } from '../modules/nf-core/medaka/main'
-include { MLST                    } from '../modules/nf-core/mlst/main'
-include { QUAST                   } from '../modules/nf-core/quast/main'
-include { BAKTA_BAKTA             } from '../modules/nf-core/bakta/bakta/main'
-include { MULTIQC                 } from '../modules/nf-core/multiqc/main'
+
+include { FASTQC      } from '../modules/nf-core/fastqc/main'
+include { FALCO       } from '../modules/nf-core/falco/main'
+include { FLYE        } from '../modules/nf-core/flye/main'
+include { MEDAKA      } from '../modules/nf-core/medaka/main'
+include { MLST        } from '../modules/nf-core/mlst/main'
+include { QUAST       } from '../modules/nf-core/quast/main'
+include { BAKTA_BAKTA } from '../modules/nf-core/bakta/bakta/main'
+include { MULTIQC     } from '../modules/nf-core/multiqc/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

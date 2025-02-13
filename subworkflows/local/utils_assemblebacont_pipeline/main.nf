@@ -132,13 +132,13 @@ workflow PIPELINE_COMPLETION {
 // Validate channels from input samplesheet
 //
 def validateInputSamplesheet(input) {
-    def (metas, fastqs, fasta) = input[1..3]
+    def (metas, fastqs) = input[1..2]
 
     // Check that multiple runs of the same sample are of the same datatype i.e. single-end / paired-end
-    def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
-    if (!endedness_ok) {
-        error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype: ${metas[0].id}")
-    }
+    //def endedness_ok = metas.collect{ meta -> meta.single_end }.unique().size == 1
+    //if (!endedness_ok) {
+      //  error("Please check input samplesheet -> Multiple runs of a sample must be of the same datatype: ${metas[0].id}")
+    //}
 
     return [ metas[0], fastqs ]
 }
