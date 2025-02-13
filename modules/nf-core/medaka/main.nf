@@ -8,8 +8,8 @@ process MEDAKA {
         //'biocontainers/medaka:medaka:2.0.1--py39hf77f13f_0' }"
 
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'quay.io/staphb/medaka:2.0.1--568a431797d8' :
-        'quay.io/staphb/medaka:2.0.1--568a431797d8' }"
+        'quay.io/staphb/medaka:2.0.1' :
+        'quay.io/staphb/medaka:2.0.1' }"
 
     input:
     tuple val(meta), path(reads), path(assembly)
