@@ -188,12 +188,12 @@ def toolCitationText() {
         "Tools used in the workflow included:",
         text_seq_qc,
         params.perform_longread_qc ? text_longread_qc : "",
-        params.skip_subsampling ? "" : text_subsampling,
+        params.skip_subsampling    ? "" : text_subsampling,
         text_denovo_assembly,
-        params.skip_medaka ? "" : text_polishing,
-        params.skip_mlst ? "" : text_mlst,
+        params.skip_medaka         ? "" : text_polishing,
+        params.skip_mlst           ? "" : text_mlst,
         text_assembly_qc,
-        params.skip_annotation ? "" : annotation_text,
+        params.skip_annotation     ? "" : annotation_text,
         "Pipeline results statistics were summarised with MultiQC (Ewels et al. 2016)."
     ].join(' ').trim().replaceAll("[,|.] +\\.", ".")
 
@@ -214,11 +214,11 @@ def toolBibliographyText() {
     ].join(' ').trim()
 
     def text_subsampling = [
-        "Read subsampling was done with Rasusa (Hall et al. 2019)."
+        "<li>Hall, MB. (2019). Rasusa: Randomly subsample sequencing reads to a specified coverage. <a href=\"https:/doi.org/10.5281/zenodo.3731394\">10.5281/zenodo.3731394</a></li>"
     ].join(' ').trim()
 
     def text_denovo_assembly = [
-        "De novo genome assembly was conducted with Flye (Kolmogorov et al. 2019)."
+        "Kolmogorov M., Yuan J., Lin Y., & Pevzner PA. (2019). Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol. 2019 May;37(5):540-546. doi: 10.1038/s41587-019-0072-8. Epub 2019 Apr 1. PMID: 30936562."
     ].join(' ').trim()
 
     def text_polishing = [
@@ -234,12 +234,17 @@ def toolBibliographyText() {
     ].join(' ').trim()
     
     def annotation_text  = [
-        "<li>Schwengers O., Jelonek L., Dieckmann M.A., Beyvers S., Blom J., & Goesmann A. (2021). Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microbial Genomics, 7(11):000685. <a href=\"https:/doi.org/10.1099/mgen.0.000685\">10.1099/mgen.0.000685.</a></li>"
+        "<li>Schwengers, O., Jelonek, L., Dieckmann, M.A., Beyvers, S., Blom J., & Goesmann A. (2021). Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microbial Genomics, 7(11):000685. <a href=\"https:/doi.org/10.1099/mgen.0.000685\">10.1099/mgen.0.000685.</a></li>"
     ].join(' ').trim()
     
     def reference_text = [
         text_seq_qc,
         params.perform_longread_qc ? text_longread_qc : "",
+        params.skip_subsampling    ? "" : text_subsampling,
+        text_denovo_assembly,
+        params.skip_medaka         ? "" : text_polishing,
+        params.skip_mlst           ? "" : text_mlst,
+        text_assembly_qc,
         params.skip_annotation     ? "" : annotation_text,
         "<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics , 32(19), 3047–3048. <a href=\"https:/doi.org/10.1093/bioinformatics/btw354\">10.1093/bioinformatics/btw354.</a></li>"
     ].join(' ').trim().replaceAll("[,|.] +\\.", ".")
