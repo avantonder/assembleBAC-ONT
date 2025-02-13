@@ -265,6 +265,8 @@ workflow ASSEMBLEBACONT {
             
             QUAST (
                     ch_to_quast,
+                    [],
+                    [],
                     false,
                     false
                 )
