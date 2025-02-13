@@ -7,9 +7,7 @@ process QUAST {
         : 'biocontainers/quast:5.2.0--py39pl5321heaaa4ec_4'}"
 
     input:
-    path consensus
-    path fasta
-    path gff
+    tuple val(meta), path(consensus)
     val use_fasta
     val use_gff
 
