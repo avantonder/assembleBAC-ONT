@@ -39,6 +39,7 @@ process FLYE {
 
     gzip -c assembly_graph.gfa > ${prefix}.assembly_graph.gfa.gz
     gzip -c assembly_graph.gv > ${prefix}.assembly_graph.gv.gz
+    mv assembly.fasta  ${prefix}.assembly.fasta
     mv assembly_info.txt ${prefix}.assembly_info.txt
     mv flye.log ${prefix}.flye.log
     mv params.json ${prefix}.params.json

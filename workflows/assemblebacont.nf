@@ -174,7 +174,7 @@ workflow ASSEMBLEBACONT {
     FLYE_PARSE (
             ch_flye_logs.collect{it[1]}.ifEmpty([])
         )
-    ch_versions = ch_versions.mix(FLYE_PARSE.out.versions.first())
+    ch_versions = ch_versions.mix( FLYE_PARSE.out.versions )
     
     //
     // MODULE: Run Medaka
@@ -214,7 +214,7 @@ workflow ASSEMBLEBACONT {
         MLST_PARSE (
                 ch_mlst_mlstparse.collect{it[1]}.ifEmpty([])
             )
-            ch_versions = ch_versions.mix(MLST_PARSE.out.versions.first())
+            ch_versions = ch_versions.mix( MLST_PARSE.out.versions )
     }
 
     //
@@ -254,7 +254,7 @@ workflow ASSEMBLEBACONT {
         CHECKM2_PARSE (
                 ch_checkm2_checkm2parse.collect{it[1]}.ifEmpty([])
             )
-            ch_versions = ch_versions.mix(CHECKM2_PARSE.out.versions.first())
+            ch_versions = ch_versions.mix( CHECKM2_PARSE.out.versions )
 
         //
         // MODULE: Run quast
@@ -272,7 +272,7 @@ workflow ASSEMBLEBACONT {
                     false,
                     false
                 )
-                ch_versions = ch_versions.mix(QUAST.out.versions.first())
+                ch_versions = ch_versions.mix( QUAST.out.versions )
         }
     }
     
