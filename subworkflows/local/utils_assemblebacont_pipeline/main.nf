@@ -218,7 +218,7 @@ def toolBibliographyText() {
     ].join(' ').trim()
 
     def text_denovo_assembly = [
-        "Kolmogorov M., Yuan J., Lin Y., & Pevzner PA. (2019). Assembly of long, error-prone reads using repeat graphs. Nat Biotechnol. 2019 May;37(5):540-546. doi: 10.1038/s41587-019-0072-8. Epub 2019 Apr 1. PMID: 30936562."
+        "<li>Kolmogorov M., Yuan J., Lin Y., & Pevzner PA. (2019). Assembly of long, error-prone reads using repeat graphs. Nature Biotechnology, 37(5):540-546. <a href=\"https:/doi.org/10.1038/s41587-019-0072-8\">10.1038/s41587-019-0072-8.</a></li>"
     ].join(' ').trim()
 
     def text_polishing = [
