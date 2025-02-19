@@ -35,6 +35,8 @@ process MEDAKA {
         -o ./
 
     mv consensus.fasta ${prefix}.fa
+    
+    gzip -n ${prefix}.fa
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -45,8 +47,7 @@ process MEDAKA {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fa
-    gzip -n ${prefix}.fa
+    touch ${prefix}.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
