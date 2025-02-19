@@ -170,6 +170,11 @@
                     "type": "string",
                     "description": "Medaka model to use"
                 },
+                "medaka_model_base_path": {
+                    "type": "string",
+                    "default": "https://github.com/nanoporetech/medaka/raw/refs/heads/master/medaka/data/",
+                    "description": "Path to medaka models directory on Github"
+                },
                 "skip_assemblyqc": {
                     "type": "boolean",
                     "description": "Skip assembly QC with CheckM2 and QUAST"
