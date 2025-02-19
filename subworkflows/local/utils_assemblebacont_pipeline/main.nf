@@ -222,15 +222,15 @@ def toolBibliographyText() {
     ].join(' ').trim()
 
     def text_polishing = [
-        "Polishing of assemblies was performed with Medaka (https://github.com/nanoporetech/medaka)."
+        "Oxford Nanopore Technologies. (2018). Medaka, URL: <a href=\"https://github.com/nanoporetech/medaka\">https://github.com/nanoporetech/medaka</a></li>"
     ].join(' ').trim()
     
     def text_mlst = [
-        "MLST prediction was done with mlst (https://github.com/tseemann/mlst)."
+        "<li>Seeman T. (2014). MLST, URL: <a href=\"https://github.com/tseemann/mlst\">https://github.com/tseemann/mlst</a></li>"
     ].join(' ').trim()
     
     def text_assembly_qc = [
-        "Assembly quality control was carried out with QUAST (Gurevich et al. 2013)."
+        "<li>Gurevich A., Saveliev V., Vyahhi N., & Tesler G. (2013). QUAST: quality assessment tool for genome assemblies. Bioinformatics. 29(8):1072-5. <a href=\"https:/doi.org/10.1093/bioinformatics/btt086\">10.1093/bioinformatics/btt086.</a></li>"
     ].join(' ').trim()
     
     def annotation_text  = [
