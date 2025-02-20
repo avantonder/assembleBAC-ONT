@@ -180,11 +180,15 @@ workflow ASSEMBLEBACONT {
     // MODULE: Run Medaka
     //
     if (!params.skip_medaka) {
+        
+        ch_medaka_model_file = Channel
+        .fromPath( params.medaka_model_base_full_path )
+        .first()
+
         MEDAKA (
                 ch_reads_assembly,
-                file(params.medaka_model_base_full_path)
-                //file("${params.medaka_model_base_path}${params.medaka_model}_model.tar.gz")
-                //params.medaka_model
+                ch_medaka_model_file
+                //file(params.medaka_model_base_full_path)
             )
         ch_assemblies_bakta   = MEDAKA.out.assembly
         ch_assemblies_mlst    = MEDAKA.out.assembly
