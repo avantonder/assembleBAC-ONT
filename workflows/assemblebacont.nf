@@ -4,12 +4,10 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { paramsSummaryMap         } from 'plugin/nf-validation'
+include { paramsSummaryMap         } from 'plugin/nf-schema'
 include { paramsSummaryMultiqc     } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText   } from '../subworkflows/local/utils_assemblebacont_pipeline'
-include { validateInputSamplesheet } from '../subworkflows/local/utils_assemblebacont_pipeline'
-include { validateParameters; paramsHelp; paramsSummaryLog; fromSamplesheet } from 'plugin/nf-validation'
 
 // Check input path parameters to see if they exist
 def checkPathParamList = [ params.input, params.multiqc_config, params.baktadb, params.checkm2db,
