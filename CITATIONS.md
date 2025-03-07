@@ -14,7 +14,8 @@
   
   > Schwengers O, Jelonek L, Dieckmann MA, Beyvers S, Blom J, Goesmann A. Bakta: rapid and standardized annotation of bacterial genomes via alignment-free sequence identification. Microb Genom. 2021 Nov;7(11):000685. doi: 10.1099/mgen.0.000685. PMID: 34739369; PMCID: PMC8743544.
 
-- [CheckM2](https://github.com/chklovski/CheckM2)
+- [CheckM2](https://pubmed.ncbi.nlm.nih.gov/37500759/)
+  >Chklovski A, Parks DH, Woodcroft BJ, Tyson GW. CheckM2: a rapid, scalable and accurate tool for assessing microbial genome quality using machine learning. Nat Methods. 2023 Aug;20(8):1203-1212. doi: 10.1038/s41592-023-01940-w. Epub 2023 Jul 27. Erratum in: Nat Methods. 2024 Apr;21(4):735. doi: 10.1038/s41592-024-02248-z. PMID: 37500759.
 
 - [Falco](https://falco.readthedocs.io/)
 
