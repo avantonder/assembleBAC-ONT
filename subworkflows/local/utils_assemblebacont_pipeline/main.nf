@@ -62,11 +62,6 @@ workflow PIPELINE_INITIALISATION {
     UTILS_NFCORE_PIPELINE (
         nextflow_cli_args
     )
-    
-    //
-    // Custom validation for pipeline parameters
-    //
-    validateInputParameters()
 
     //
     // Create channel from input file provided through params.input
