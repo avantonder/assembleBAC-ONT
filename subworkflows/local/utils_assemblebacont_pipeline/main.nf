@@ -177,7 +177,7 @@ def toolCitationText() {
     ].join(' ').trim()
     
     def text_assembly_qc = [
-        "Assembly quality control was carried out with QUAST (Gurevich et al. 2013)."
+        "Assembly quality control was carried out with QUAST (Gurevich et al. 2013).",
         "Assembly completeness and contamination was assessed with CheckM2 (Chklovski et al. 2023)"
     ].join(' ').trim()
     
@@ -231,7 +231,7 @@ def toolBibliographyText() {
     ].join(' ').trim()
     
     def text_assembly_qc = [
-        "<li>Gurevich A., Saveliev V., Vyahhi N., & Tesler G. (2013). QUAST: quality assessment tool for genome assemblies. Bioinformatics. 29(8):1072-5. <a href=\"https:/doi.org/10.1093/bioinformatics/btt086\">10.1093/bioinformatics/btt086.</a></li>"
+        "<li>Gurevich A., Saveliev V., Vyahhi N., & Tesler G. (2013). QUAST: quality assessment tool for genome assemblies. Bioinformatics. 29(8):1072-5. <a href=\"https:/doi.org/10.1093/bioinformatics/btt086\">10.1093/bioinformatics/btt086.</a></li>",
         "<li>Chklovski A., Parks D.H., Woodcroft B.J., & Tyson G.W. (2023). CheckM2: a rapid, scalable and accurate tool for assessing microbial genome quality using machine learning. Nature Methods. 20(8):1203-1212. <a href=\"https:/doi.org/10.1038/s41592-023-01940-w\">10.1038/s41592-023-01940-w.</a></li>"
     ].join(' ').trim()
     
