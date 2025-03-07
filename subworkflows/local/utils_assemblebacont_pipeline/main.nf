@@ -178,6 +178,7 @@ def toolCitationText() {
     
     def text_assembly_qc = [
         "Assembly quality control was carried out with QUAST (Gurevich et al. 2013)."
+        "Assembly completeness and contamination was assessed with CheckM2 (Chklovski et al. 2023)"
     ].join(' ').trim()
     
     def annotation_text  = [
@@ -192,7 +193,7 @@ def toolCitationText() {
         text_denovo_assembly,
         params.skip_medaka         ? "" : text_polishing,
         params.skip_mlst           ? "" : text_mlst,
-        text_assembly_qc,
+        params.skip_assemblyqc     ? "" : text_assembly_qc,
         params.skip_annotation     ? "" : annotation_text,
         "Pipeline results statistics were summarised with MultiQC (Ewels et al. 2016)."
     ].join(' ').trim().replaceAll("[,|.] +\\.", ".")
@@ -231,6 +232,7 @@ def toolBibliographyText() {
     
     def text_assembly_qc = [
         "<li>Gurevich A., Saveliev V., Vyahhi N., & Tesler G. (2013). QUAST: quality assessment tool for genome assemblies. Bioinformatics. 29(8):1072-5. <a href=\"https:/doi.org/10.1093/bioinformatics/btt086\">10.1093/bioinformatics/btt086.</a></li>"
+        "<li>Chklovski A., Parks D.H., Woodcroft B.J., & Tyson G.W. (2023). CheckM2: a rapid, scalable and accurate tool for assessing microbial genome quality using machine learning. Nature Methods. 20(8):1203-1212. <a href=\"https:/doi.org/10.1038/s41592-023-01940-w\">10.1038/s41592-023-01940-w.</a></li>"
     ].join(' ').trim()
     
     def annotation_text  = [
@@ -244,7 +246,7 @@ def toolBibliographyText() {
         text_denovo_assembly,
         params.skip_medaka         ? "" : text_polishing,
         params.skip_mlst           ? "" : text_mlst,
-        text_assembly_qc,
+        params.skip_assemblyqc     ? "" : text_assembly_qc,
         params.skip_annotation     ? "" : annotation_text,
         "<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics , 32(19), 3047–3048. <a href=\"https:/doi.org/10.1093/bioinformatics/btw354\">10.1093/bioinformatics/btw354.</a></li>"
     ].join(' ').trim().replaceAll("[,|.] +\\.", ".")
