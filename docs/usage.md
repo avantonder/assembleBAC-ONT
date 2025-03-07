@@ -4,26 +4,35 @@
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information that maps sample ids to barcode ids before running the pipeline. Use this parameter to specify its location.
+You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. It has to be a comma-separated file with 2 columns, and a header row as shown in the example below.
+
+An executable Python script called [`build_samplesheet.py`](https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py) has been provided to auto-create an input samplesheet based on a directory containing sub-directories with the prefix `barcode` which contain the FastQ files **before** you run the pipeline (requires Python 3 installed locally) e.g.
+
+     ```console
+     wget -L https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py
+
+     python build_samplesheet.py -i <FASTQ_DIR> 
+     ```
+
+Use the `--input` parameter to specify the location of `samplesheet.csv`. It has to be a comma-separated file with 2 columns.
 
 ```console
 --input '[path to samplesheet file]'
 ```
 
-It has to be a comma-separated file with 2 columns. A final samplesheet file may look something like the one below:
+ A final samplesheet file may look something like the one below:
 
 ```console
-sample,barcode
-21X983255,1
-70H209408,2
-49Y807476,3
-70N209581,4
+sample,fastq
+SAMPLE_1,path/to/fastq/file1
+SAMPLE_1,path/to/fastq/file2
+SAMPLE_2,path/to/fastq/file1
 ```
 
-| Column    | Description                                                                           |
-| --------- | ------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name, one per barcode.                                                  |
-| `barcode` | Barcode identifier attributed to that sample during multiplexing. Must be an integer. |
+| Column    | Description                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------- |
+| `sample`  | Custom sample name, one per barcode.                                                        |
+| `fastq`   | Full path to FastQ file. File has to be gzipped and have the extension ".fastq.gz" or ".fq. |
 
 > **NB:** Dashes (`-`) and spaces in sample names are automatically converted to underscores (`_`) to avoid downstream issues in the pipeline.
 
@@ -38,7 +47,6 @@ The typical command for running the pipeline is as follows:
       -profile singularity \
       -c <INSTITUTION>.config \
       --input samplesheet.csv \
-      --fastq_dir path/to/fastq/files \
       --genome_size <ESTIMATED GENOME SIZE e.g. 4M> \
       --medaka_model <MEDAKA MODEL> \
       --min_read_length <MINIMUM READ LENGTH> \
