@@ -12,8 +12,10 @@
 
 **avantonder/assembleBAC-ONT** is a bioinformatics pipeline that *de novo* assembles and annotates Oxford Nanopore (ONT) long-read sequence data.
 
-1. Aggregate pre-demultiplexed reads from MinKNOW/Guppy ([`artic guppyplex`](https://artic.readthedocs.io/en/latest/commands/))
-2. Filter long reads ([`Filtlong`](https://github.com/rrwick/Filtlong))
+1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) or [`falco`](https://github.com/smithlabcode/falco) as an alternative option)
+2. Performs optional read pre-processing
+   - Adapter clipping and merging ([porechop](https://github.com/rrwick/Porechop), [Porechop_ABI](https://github.com/bonsai-team/Porechop_ABI))
+   - Low complexity and quality filtering ([Filtlong](https://github.com/rrwick/Filtlong), [Nanoq](https://github.com/esteinig/nanoq))
 3. Downsample fastq files ([`Rasusa`](https://github.com/mbhall88/rasusa))
 4. Remove adapter sequences ([`Porechop`](https://github.com/rrwick/Porechop))
 5. *de novo* assembly ([`Flye`](https://github.com/fenderglass/Flye))
@@ -26,11 +28,11 @@
 
 ## Quick Start
 
-1. Install [`nextflow`](https://nf-co.re/usage/installation)(`>=23.04.0`)
+1. Install [`nextflow`](https://nf-co.re/usage/installation)(`>=24.04.0`)
 
 2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/), [`Podman`](https://podman.io/), [`Shifter`](https://nersc.gitlab.io/development/shifter/how-to-use/) or [`Charliecloud`](https://hpc.github.io/charliecloud/) for full pipeline reproducibility _(please only use [`Conda`](https://conda.io/miniconda.html) as a last resort; see [docs](https://nf-co.re/usage/configuration#basic-configuration-profiles))_
 
-3. Download the `Bakta` light database (`Bakta` is required to run the `amrfinder_update` command):
+3. Download the `Bakta` light database (`Bakta` version **1.10.4** is required to run the `amrfinder_update` command):
 
     ```bash
     wget https://zenodo.org/record/7669534/files/db-light.tar.gz
@@ -45,7 +47,22 @@
     checkm2 database --download --path path/to/checkm2db
     ```
 
-5. Start running your own analysis!
+5. You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. It has to be a comma-separated file with 2 columns, and a header row as shown in the example below. An executable Python script called [`build_samplesheet.py`](https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py) has been provided to auto-create an input samplesheet based on a directory containing sub-directories with the prefix `barcode` which contain the FastQ files **before** you run the pipeline (requires Python 3 installed locally) e.g.
+
+     ```console
+     wget -L https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py
+
+     python build_samplesheet.py -i <FASTQ_DIR> 
+     ```
+   
+   ```console
+   sample,fastq
+   SAMPLE_1,path/to/fastq/file1
+   SAMPLE_1,path/to/fastq/file2
+   SAMPLE_2,path/to/fastq/file1  
+   ```
+
+6. Start running your own analysis!
     - Typical command for assembly and annotation
 
     ```bash
@@ -53,7 +70,6 @@
         -profile singularity \
         -c <INSTITUTION>.config \
         --input samplesheet.csv \
-        --fastq_dir path/to/fastq/files \
         --genome_size <ESTIMATED GENOME SIZE e.g. 4M> \
         --medaka_model <MEDAKA MODEL> \
         --min_read_length <MINIMUM READ LENGTH> \

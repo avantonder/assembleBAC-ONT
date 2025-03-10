@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/avantonder/assembleBAC-ONT/master/assets/schema_input.json",
     "title": "avantonder/assembleBAC-ONT pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
@@ -10,14 +10,17 @@
             "sample": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces"
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
             },
-            "barcode": {
-                "type": "integer",
-                "pattern": "^\\d+$",
-                "errorMessage": "Barcode must be provided and must be an integer"
+            "fastq": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for read must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
             }
         },
-        "required": ["sample", "barcode"]
+        "required": ["sample", "fastq"]
     }
 }

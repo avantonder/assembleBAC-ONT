@@ -1,37 +1,25 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    PRINT PARAMS SUMMARY
+    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { paramsSummaryLog; paramsSummaryMap } from 'plugin/nf-validation'
-
-def logo = NfcoreTemplate.logo(workflow, params.monochrome_logs)
-def citation = '\n' + WorkflowMain.citation(workflow) + '\n'
-def summary_params = paramsSummaryMap(workflow)
-
-// Print parameter summary log to screen
-log.info logo + paramsSummaryLog(workflow) + citation
+include { paramsSummaryMap         } from 'plugin/nf-schema'
+include { paramsSummaryMultiqc     } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText   } from '../subworkflows/local/utils_assemblebacont_pipeline'
 
 // Check input path parameters to see if they exist
-def checkPathParamList = [ params.input, params.multiqc_config]
+def checkPathParamList = [ params.input, params.multiqc_config, params.baktadb, params.checkm2db,
+                           params.multiqc_logo, params.multiqc_methods_description ]
 for (param in checkPathParamList) { if (param) { file(param, checkIfExists: true) } }
 
 // Check mandatory parameters
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
-
-WorkflowAssemblebacont.initialise(params, log)
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    CONFIG FILES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-ch_multiqc_config          = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
-ch_multiqc_custom_config   = params.multiqc_config ? Channel.fromPath( params.multiqc_config, checkIfExists: true ) : Channel.empty()
-ch_multiqc_logo            = params.multiqc_logo   ? Channel.fromPath( params.multiqc_logo, checkIfExists: true ) : Channel.empty()
-ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+if ( params.input ) {
+    ch_input = file(params.input, checkIfExists: true)
+} else {
+    error("Input samplesheet not specified")
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -42,13 +30,14 @@ ch_multiqc_custom_methods_description = params.multiqc_methods_description ? fil
 //
 // SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
 //
-include { INPUT_CHECK   } from '../subworkflows/local/input_check'
-include { SUB_SAMPLING  } from '../subworkflows/local/sub_sampling'
+include { LONGREAD_PREPROCESSING  } from '../subworkflows/local/longread_preprocessing'
+include { SUB_SAMPLING            } from '../subworkflows/local/sub_sampling'
 
-include { FLYE_PARSE    } from '../modules/local/flye_parse'
-include { CHECKM2       } from '../modules/local/checkm2/main'
-include { CHECKM2_PARSE } from '../modules/local/checkm2_parse'
-include { MLST_PARSE    } from '../modules/local/mlst_parse'
+include { CAT_FASTQ as MERGE_RUNS } from '../modules/local/cat/fastq/main'
+include { FLYE_PARSE              } from '../modules/local/flye_parse'
+include { CHECKM2                 } from '../modules/local/checkm2/main'
+include { CHECKM2_PARSE           } from '../modules/local/checkm2_parse'
+include { MLST_PARSE              } from '../modules/local/mlst_parse'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,16 +48,15 @@ include { MLST_PARSE    } from '../modules/local/mlst_parse'
 //
 // MODULE: Installed directly from nf-core/modules
 //
-include { ARTIC_GUPPYPLEX             } from '../modules/nf-core/artic/guppyplex/main'
-include { FILTLONG                    } from '../modules/nf-core/filtlong/main'
-include { PORECHOP_PORECHOP           } from '../modules/nf-core/porechop/porechop/main'
-include { FLYE                        } from '../modules/nf-core/flye/main'
-include { MEDAKA                      } from '../modules/nf-core/medaka/main'
-include { MLST                        } from '../modules/nf-core/mlst/main'
-include { QUAST                       } from '../modules/nf-core/quast/main'
-include { BAKTA_BAKTA                 } from '../modules/nf-core/bakta/bakta/main'
-include { MULTIQC                     } from '../modules/nf-core/multiqc/main'
-include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoftwareversions/main'
+
+include { FASTQC      } from '../modules/nf-core/fastqc/main'
+include { FALCO       } from '../modules/nf-core/falco/main'
+include { FLYE        } from '../modules/nf-core/flye/main'
+include { MEDAKA      } from '../modules/nf-core/medaka/main'
+include { MLST        } from '../modules/nf-core/mlst/main'
+include { QUAST       } from '../modules/nf-core/quast/main'
+include { BAKTA_BAKTA } from '../modules/nf-core/bakta/bakta/main'
+include { MULTIQC     } from '../modules/nf-core/multiqc/main'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,81 +64,91 @@ include { CUSTOM_DUMPSOFTWAREVERSIONS } from '../modules/nf-core/custom/dumpsoft
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// Info required for completion email and summary
-def multiqc_report = []
-
 workflow ASSEMBLEBACONT {
 
+    take:
+    samplesheet // channel: samplesheet read in from --input
+
+    main:
+    
     ch_versions = Channel.empty()
-
-    // Prepare input from barcode directory specified with --fastq_dir flag
-
-    barcode_dirs = file("${params.fastq_dir}/barcode*", type: 'dir' , maxdepth: 1)
-
-    Channel
-            .fromPath( barcode_dirs )
-            .filter( ~/.*barcode[0-9]{1,4}$/ )
-            .map { dir ->
-                def count = 0
-                for (x in dir.listFiles()) {
-                    if (x.isFile() && x.toString().contains('.fastq')) {
-                        count += x.countFastq()
-                    }
-                }
-                return [ dir.baseName , dir, count ]
+    ch_multiqc_files = Channel.empty()
+      
+    // Validate input file and create channel for FASTQ data
+    ch_input = samplesheet
+        .map { meta, fastq -> 
+        
+        // Define single_end
+        //meta.single_end = ( fastq )
+        
+        return [ meta, fastq ]
+        }
+    
+    if ( params.perform_runmerging ) {
+    
+        ch_reads_for_cat = ch_input
+            .groupTuple()      
+            .map { meta, fastq -> [ meta, fastq.flatten() ]}
+            .branch { meta, fastq -> 
+            // we can't concatenate files if there is not a second run, we branch
+            // here to separate them out, and mix back in after for efficiency
+                cat: ( fastq.size() > 1 )
+                skip: true
             }
-            .set { ch_fastq_dirs }
+
+        ch_reads_runmerged = MERGE_RUNS ( ch_reads_for_cat.cat ).reads
+                .mix( ch_reads_for_cat.skip )
+                .map {
+                    meta, fastq ->
+                    [ meta, [ fastq ].flatten() ]
+                }
+
+            ch_versions = ch_versions.mix(MERGE_RUNS.out.versions)
+
+    } else {
+        ch_reads_runmerged = ch_input
+    }
     
-    //
-    // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
-    INPUT_CHECK (
-        file(params.input)
-    )
-    .sample_info
-    .join(ch_fastq_dirs, remainder: true)
-    .map { barcode, sample, dir, count -> [ [ id: sample, barcode:barcode ], dir ] }
-    .set { ch_fastq_dirs }
-    ch_versions = ch_versions.mix(INPUT_CHECK.out.versions)
+    /*
+        MODULE: Run FastQC
+    */
+
+
+    if ( !params.skip_preprocessing_qc ) {
+        if ( params.preprocessing_qc_tool == 'falco' ) {
+            FALCO ( ch_reads_runmerged )
+            ch_versions = ch_versions.mix(FALCO.out.versions.first())
+        } else {
+            FASTQC ( ch_reads_runmerged )
+            ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+        }
+    }
     
-    //
-    // MODULE: Run Artic Guppyplex
-    //
-    ARTIC_GUPPYPLEX (
-        ch_fastq_dirs
-    )
-    ch_versions = ch_versions.mix(ARTIC_GUPPYPLEX.out.versions.first())
-    
-    //
-    // MODULE: Run filtlong
-    //
-    FILTLONG (
-        ARTIC_GUPPYPLEX.out.fastq,
-        params.min_read_length
-    )
-    ch_filtered_reads = FILTLONG.out.reads
-    ch_versions       = ch_versions.mix(FILTLONG.out.versions.first())
+    /*
+        SUBWORKFLOW: PERFORM PREPROCESSING
+    */
+
+    if ( params.perform_longread_qc ) {
+        ch_longreads_preprocessed = LONGREAD_PREPROCESSING ( ch_reads_runmerged ).reads
+                                        .map { it -> [ it[0], [it[1]] ] }
+        ch_versions = ch_versions.mix( LONGREAD_PREPROCESSING.out.versions )
+    } else {
+        ch_longreads_preprocessed = ch_reads_runmerged
+    }
 
     //
     // MODULE: Subsample reads
     //
     if (!params.skip_subsampling) {
         SUB_SAMPLING(
-            ch_filtered_reads
+            ch_longreads_preprocessed
         )
-        ch_filtered_reads = SUB_SAMPLING.out.reads
-        ch_versions       = ch_versions.mix(SUB_SAMPLING.out.versions.first())
+        ch_trimmed_reads = SUB_SAMPLING.out.reads
+        ch_versions      = ch_versions.mix(SUB_SAMPLING.out.versions.first())
+    } else {
+        ch_trimmed_reads = ch_longreads_preprocessed
     }
-
-    //
-    // MODULE: Run porechop
-    //
-    PORECHOP_PORECHOP (
-        ch_filtered_reads
-    )
-    ch_trimmed_reads = PORECHOP_PORECHOP.out.reads
-    ch_versions      = ch_versions.mix(PORECHOP_PORECHOP.out.versions.first())
-    
+   
     //
     // MODULE: Run flye
     //
@@ -159,8 +157,9 @@ workflow ASSEMBLEBACONT {
             params.flye_mode
         )
     //ch_assemblies_medaka = FLYE.out.fasta
-    ch_flye_logs = FLYE.out.log
-    ch_versions  = ch_versions.mix(FLYE.out.versions.first())
+    ch_flye_logs       = FLYE.out.log
+    ch_flye_assemblies = FLYE.out.fasta
+    ch_versions        = ch_versions.mix(FLYE.out.versions.first())
 
     // Create channel for Medaka
     ch_trimmed_reads               // tuple val(meta), path(reads)
@@ -173,20 +172,33 @@ workflow ASSEMBLEBACONT {
     FLYE_PARSE (
             ch_flye_logs.collect{it[1]}.ifEmpty([])
         )
-    ch_versions = ch_versions.mix(FLYE_PARSE.out.versions.first())
+    ch_versions = ch_versions.mix( FLYE_PARSE.out.versions )
     
     //
     // MODULE: Run Medaka
     //
-    MEDAKA (
-            ch_reads_assembly,
-            params.medaka_model
-        )
-    ch_assemblies_bakta   = MEDAKA.out.assembly
-    ch_assemblies_mlst    = MEDAKA.out.assembly
-    ch_assemblies_checkm2 = MEDAKA.out.assembly
-    ch_assemblies_quast   = MEDAKA.out.assembly
-    ch_versions           = ch_versions.mix(MEDAKA.out.versions.first())
+    if (!params.skip_medaka) {
+        
+        ch_medaka_model_file = Channel
+        .fromPath( params.medaka_model_base_full_path )
+        .first()
+
+        MEDAKA (
+                ch_reads_assembly,
+                ch_medaka_model_file
+                //file(params.medaka_model_base_full_path)
+            )
+        ch_assemblies_bakta   = MEDAKA.out.assembly
+        ch_assemblies_mlst    = MEDAKA.out.assembly
+        ch_assemblies_checkm2 = MEDAKA.out.assembly
+        ch_assemblies_quast   = MEDAKA.out.assembly
+        ch_versions           = ch_versions.mix(MEDAKA.out.versions.first())
+    } else {
+        ch_assemblies_bakta   = ch_flye_assemblies
+        ch_assemblies_mlst    = ch_flye_assemblies
+        ch_assemblies_checkm2 = ch_flye_assemblies
+        ch_assemblies_quast   = ch_flye_assemblies
+    }
 
     //
     // MODULE: Run mlst
@@ -204,7 +216,7 @@ workflow ASSEMBLEBACONT {
         MLST_PARSE (
                 ch_mlst_mlstparse.collect{it[1]}.ifEmpty([])
             )
-            ch_versions = ch_versions.mix(MLST_PARSE.out.versions.first())
+            ch_versions = ch_versions.mix( MLST_PARSE.out.versions )
     }
 
     //
@@ -244,72 +256,112 @@ workflow ASSEMBLEBACONT {
         CHECKM2_PARSE (
                 ch_checkm2_checkm2parse.collect{it[1]}.ifEmpty([])
             )
-            ch_versions = ch_versions.mix(CHECKM2_PARSE.out.versions.first())
+            ch_versions = ch_versions.mix( CHECKM2_PARSE.out.versions )
+
+        //
+        // MODULE: Run quast
+        //
+        if (!params.skip_quast) {
+            ch_assemblies_quast
+                .map { meta, fasta -> fasta }
+                .collect()
+                .set { ch_to_quast }
+            
+            QUAST (
+                    ch_to_quast,
+                    [],
+                    [],
+                    false,
+                    false
+                )
+                ch_versions = ch_versions.mix( QUAST.out.versions )
+        }
     }
-    //
-    // MODULE: Run quast
-    //
-    ch_assemblies_quast
-        .map { meta, fasta -> fasta }
-        .collect()
-        .set { ch_to_quast }
     
-    QUAST (
-            ch_to_quast,
-            [],
-            [],
-            false,
-            false
-        )
-        ch_versions = ch_versions.mix(QUAST.out.versions.first())
+    /*
+        MODULE: MultiQC
+    */
 
     //
-    // MODULE: Collate software versions
+    // Collate and save software versions
     //
-    CUSTOM_DUMPSOFTWAREVERSIONS (
-        ch_versions.unique().collectFile(name: 'collated_versions.yml')
-    )
+    softwareVersionsToYAML(ch_versions)
+        .collectFile(
+            storeDir: "${params.outdir}/pipeline_info",
+            name: 'avantonder_'  +  'assemblebacont_software_'  + 'mqc_'  + 'versions.yml',
+            sort: true,
+            newLine: true
+        ).set { ch_collated_versions }
 
     //
     // MODULE: MultiQC
     //
-    workflow_summary    = WorkflowAssemblebacont.paramsSummaryMultiqc(workflow, summary_params)
-    ch_workflow_summary = Channel.value(workflow_summary)
+    ch_multiqc_config        = Channel.fromPath(
+        "$projectDir/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config = params.multiqc_config ?
+        Channel.fromPath(params.multiqc_config, checkIfExists: true) :
+        Channel.empty()
+    ch_multiqc_logo          = params.multiqc_logo ?
+        Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
+        Channel.fromPath("${workflow.projectDir}/docs/images/assemblebacont_logo.png", checkIfExists: true)
 
-    methods_description    = WorkflowAssemblebacont.methodsDescriptionText(workflow, ch_multiqc_custom_methods_description, params)
-    ch_methods_description = Channel.value(methods_description)
+    summary_params      = paramsSummaryMap(
+        workflow, parameters_schema: "nextflow_schema.json")
+    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
 
-    ch_multiqc_files = Channel.empty()
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(CUSTOM_DUMPSOFTWAREVERSIONS.out.mqc_yml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FILTLONG.out.log.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(PORECHOP_PORECHOP.out.log.collect{it[1]}.ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(QUAST.out.tsv.collect())
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
+        file(params.multiqc_methods_description, checkIfExists: true) :
+        file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+    ch_methods_description                = Channel.value(
+        methodsDescriptionText(ch_multiqc_custom_methods_description))
+
+    ch_multiqc_files = ch_multiqc_files.mix(
+        ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
+    ch_multiqc_files = ch_multiqc_files.mix(
+        ch_methods_description.collectFile(
+            name: 'methods_description_mqc.yaml',
+            sort: true
+        )
+    )
+
+    if ( !params.skip_preprocessing_qc ) {
+        if ( params.preprocessing_qc_tool == 'falco' ) {
+            // only mix in files actually used by MultiQC
+            ch_multiqc_files = ch_multiqc_files.mix(FALCO.out.txt
+                                .map { meta, reports -> reports }
+                                .flatten()
+                                .filter { path -> path.name.endsWith('_data.txt')}
+                                .ifEmpty([]))
+        } else {
+            ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
+        }
+    }
+
+    if (params.perform_longread_qc) {
+        ch_multiqc_files = ch_multiqc_files.mix( LONGREAD_PREPROCESSING.out.mqc.collect{it[1]}.ifEmpty([]) )
+    }
+
+    if (!params.skip_quast) {
+        ch_multiqc_files = ch_multiqc_files.mix(QUAST.out.tsv.collect())
+    }
+
+    if (!params.skip_annotation) {
+        ch_multiqc_files = ch_multiqc_files.mix(BAKTA_BAKTA.out.txt.collect{it[1]}.ifEmpty([]))
+    }
 
     MULTIQC (
         ch_multiqc_files.collect(),
         ch_multiqc_config.toList(),
         ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList()
+        ch_multiqc_logo.toList(),
+        [],
+        []
     )
-    multiqc_report = MULTIQC.out.report.toList()
-}
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    COMPLETION EMAIL AND SUMMARY
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-workflow.onComplete {
-    if (params.email || params.email_on_fail) {
-        NfcoreTemplate.email(workflow, params, summary_params, projectDir, log, multiqc_report)
-    }
-    NfcoreTemplate.summary(workflow, params, log)
-    if (params.hook_url) {
-        NfcoreTemplate.IM_notification(workflow, params, summary_params, projectDir, log)
-    }
+    emit:
+    multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
+    versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
 
 /*
