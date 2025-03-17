@@ -2,6 +2,8 @@
 
 # ![avantonder/assembleBAC-ONT](docs/images/assembleBAC-ONT_metromap.png)
 
+[![Cite with Zenodo](https://zenodo.org/badge/681230079.svg))](https://doi.org/10.5281/zenodo.15040673)
+
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A524.04.2-23aa62.svg)](https://www.nextflow.io/)
 [![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
@@ -99,6 +101,6 @@ If you have any issues, questions or suggestions for improving assembleBAC-ONT, 
 
 ## Citations
 
-If you use the avantonder/assembleBAC-ONT pipeline, please cite it using the following doi: ZENODO_DOI
+If you use the avantonder/assembleBAC-ONT pipeline, please cite it using the following doi: [10.5281/zenodo.15040673](https://doi.org/10.5281/zenodo.15040673)
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
