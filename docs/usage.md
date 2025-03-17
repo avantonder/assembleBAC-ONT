@@ -6,10 +6,10 @@
 
 You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. It has to be a comma-separated file with 2 columns, and a header row as shown in the example below.
 
-An executable Python script called [`build_samplesheet.py`](https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py) has been provided to auto-create an input samplesheet based on a directory containing sub-directories with the prefix `barcode` which contain the FastQ files **before** you run the pipeline (requires Python 3 installed locally) e.g.
+An executable Python script called [`build_samplesheet.py`](https://github.com/avantonder/assembleBAC-ONT/blob/master/assets/build_samplesheet.py) has been provided to auto-create an input samplesheet based on a directory containing sub-directories with the prefix `barcode` which contain the FastQ files **before** you run the pipeline (requires Python 3 installed locally) e.g.
 
      ```console
-     wget -L https://github.com/avantonder/bacQC-ONT/blob/master/bin/build_samplesheet.py
+     wget -L https://github.com/avantonder/assembleBAC-ONT/blob/master/assets/build_samplesheet.py
 
      python build_samplesheet.py -i <FASTQ_DIR> 
      ```
@@ -49,7 +49,6 @@ The typical command for running the pipeline is as follows:
       --input samplesheet.csv \
       --genome_size <ESTIMATED GENOME SIZE e.g. 4M> \
       --medaka_model <MEDAKA MODEL> \
-      --min_read_length <MINIMUM READ LENGTH> \
       --outdir <OUTDIR> \
       --baktadb path/to/baktadb/dir \
       --checkm2db path/to/checkm2db/diruniref100.KO.1.dmnd \
