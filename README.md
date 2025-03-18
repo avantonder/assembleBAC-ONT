@@ -17,8 +17,8 @@
 
 1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) or [`falco`](https://github.com/smithlabcode/falco) as an alternative option)
 2. Performs optional read pre-processing
-   - Adapter clipping and merging ([porechop](https://github.com/rrwick/Porechop), [Porechop_ABI](https://github.com/bonsai-team/Porechop_ABI))
-   - Low complexity and quality filtering ([Filtlong](https://github.com/rrwick/Filtlong), [Nanoq](https://github.com/esteinig/nanoq))
+   - Adapter clipping and merging ([`porechop`](https://github.com/rrwick/Porechop), [`Porechop_ABI`](https://github.com/bonsai-team/Porechop_ABI))
+   - Low complexity and quality filtering ([`Filtlong`](https://github.com/rrwick/Filtlong), [`Nanoq`](https://github.com/esteinig/nanoq))
 3. Downsample fastq files ([`Rasusa`](https://github.com/mbhall88/rasusa))
 4. *de novo* assembly ([`Flye`](https://github.com/fenderglass/Flye))
 5. Polish assemblies with ONT data ([`Medaka`](https://nanoporetech.github.io/medaka/index.html))
