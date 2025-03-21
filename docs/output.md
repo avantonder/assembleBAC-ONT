@@ -33,9 +33,9 @@ The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes d
 
 - `{fastqc,falco}/`
   - {raw,preprocessed}
-    - `*html`: FastQC or Falco report containing quality metrics in HTML format.
-    - `*.txt`: FastQC or Falco report containing quality metrics in TXT format.
-    - `*.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images (FastQC only).
+    - `<sample_id>.html`: FastQC or Falco report containing quality metrics in HTML format.
+    - `<sample_id>.txt`: FastQC or Falco report containing quality metrics in TXT format.
+    - `<sample_id>.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images (FastQC only).
 
 </details>
 
@@ -148,6 +148,7 @@ You will only find the `.fastq` files in the results directory if you provide ` 
   - `<sample_id>.flye.log`: log file containing summary statistics
   - `<sample_id>.assembly_graph.gfa.gz`: *de novo* assembly graph file
   - `<sample_id>.assembly.fasta`: *de novo* assembly FASTA file
+  - `<sample_id>.assembly_info.txt`: extra information and statistics about contigs
 
 </details>
 
