@@ -1,0 +1,14 @@
+[
+  {
+    "timestamp": "2025-05-15T10:05:08.422375",
+    "total_clones": 1,
+    "unique_cloners": 1,
+    "daily_data": [
+      {
+        "timestamp": "2025-05-10T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      }
+    ]
+  }
+]
