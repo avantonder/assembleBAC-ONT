@@ -1,0 +1,26 @@
+name: Clone Tracker
+on:
+  schedule:
+    - cron: "0 0 * * 0"  # Runs every Sunday at midnight
+  workflow_dispatch:     # Allow manual triggers
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Needed to commit log file
+    steps:
+      - uses: actions/checkout@v4
+      - name: Track clones
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Inject secret
+        run: |
+          pip install python-dotenv requests  # Install dependencies
+          python3 scripts/track_clones.py
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add clone_log.json
+          git commit -m "Update clone stats"
+          git push
