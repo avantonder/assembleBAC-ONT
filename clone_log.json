@@ -10,5 +10,32 @@
         "uniques": 1
       }
     ]
+  },
+  {
+    "timestamp": "2025-05-18T01:03:32.601836",
+    "total_clones": 16,
+    "unique_cloners": 14,
+    "daily_data": [
+      {
+        "timestamp": "2025-05-10T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-05-15T00:00:00Z",
+        "count": 11,
+        "uniques": 11
+      },
+      {
+        "timestamp": "2025-05-16T00:00:00Z",
+        "count": 3,
+        "uniques": 2
+      },
+      {
+        "timestamp": "2025-05-17T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      }
+    ]
   }
 ]
