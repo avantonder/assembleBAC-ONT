@@ -37,5 +37,37 @@
         "uniques": 1
       }
     ]
+  },
+  {
+    "timestamp": "2025-05-25T01:05:10.553083",
+    "total_clones": 20,
+    "unique_cloners": 17,
+    "daily_data": [
+      {
+        "timestamp": "2025-05-15T00:00:00Z",
+        "count": 11,
+        "uniques": 11
+      },
+      {
+        "timestamp": "2025-05-16T00:00:00Z",
+        "count": 3,
+        "uniques": 2
+      },
+      {
+        "timestamp": "2025-05-17T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-05-18T00:00:00Z",
+        "count": 3,
+        "uniques": 3
+      },
+      {
+        "timestamp": "2025-05-24T00:00:00Z",
+        "count": 2,
+        "uniques": 2
+      }
+    ]
   }
 ]
