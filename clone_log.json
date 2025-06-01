@@ -69,5 +69,27 @@
         "uniques": 2
       }
     ]
+  },
+  {
+    "timestamp": "2025-06-01T01:12:10.080496",
+    "total_clones": 9,
+    "unique_cloners": 9,
+    "daily_data": [
+      {
+        "timestamp": "2025-05-24T00:00:00Z",
+        "count": 2,
+        "uniques": 2
+      },
+      {
+        "timestamp": "2025-05-25T00:00:00Z",
+        "count": 6,
+        "uniques": 6
+      },
+      {
+        "timestamp": "2025-05-31T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      }
+    ]
   }
 ]
