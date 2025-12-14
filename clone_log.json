@@ -1280,5 +1280,62 @@
         "uniques": 1
       }
     ]
+  },
+  {
+    "timestamp": "2025-12-14T01:08:00.456622",
+    "total_clones": 21,
+    "unique_cloners": 16,
+    "daily_data": [
+      {
+        "timestamp": "2025-11-30T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-01T00:00:00Z",
+        "count": 2,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-03T00:00:00Z",
+        "count": 6,
+        "uniques": 4
+      },
+      {
+        "timestamp": "2025-12-06T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-07T00:00:00Z",
+        "count": 6,
+        "uniques": 5
+      },
+      {
+        "timestamp": "2025-12-09T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-10T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-11T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-12T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      },
+      {
+        "timestamp": "2025-12-13T00:00:00Z",
+        "count": 1,
+        "uniques": 1
+      }
+    ]
   }
 ]
